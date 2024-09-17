@@ -30,3 +30,21 @@
 *.exe
 *.out
 *.app
+
+# Visual Studio Cache
+.vs/
+
+# Build
+build/
+
+# CMakePresets
+CMakePresets.json
+
+# vcpkg
+vcpkg_installed/
+
+# VSCode
+.vscode/
+build-linux.sh
+.DS_Store
+.vcpkg_path
