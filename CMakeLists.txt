@@ -1,5 +1,5 @@
 # Setup
-cmake_minimum_required (VERSION 3.28)
+cmake_minimum_required(VERSION 3.28)
 project("TaiyouUI")
 
 # Define optional features
@@ -16,9 +16,9 @@ add_library(TaiyouUI STATIC
   "TaiyouUI/UIRoot.h" "TaiyouUI/UIRoot.cpp" "TaiyouUI/Control.h" "TaiyouUI/Container.h" "TaiyouUI/Container.cpp"
   "TaiyouUI/Layer.h" "TaiyouUI/Layer.cpp" "TaiyouUI/Controls/Button.h" "TaiyouUI/Controls/Button.cpp"
 )
+
 # Set C++ standard to 20
 set_property(TARGET TaiyouUI PROPERTY CXX_STANDARD 20)
-
 
 # Set library dependencies
 target_link_libraries(TaiyouUI PRIVATE fmt::fmt)
