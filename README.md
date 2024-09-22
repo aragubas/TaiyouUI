@@ -19,6 +19,5 @@ add_subdirectory ("TaiyouUI")
 
 Then, in the child project which will use TaiyouUI, you can link and include TaiyouUI as follows
 ```CMake
-target_link_libraries(<Project Name> PUBLIC TaiyouUI)
-target_include_directories(<Project Name> PUBLIC ${PROJECT_BINARY_DIR} ${PROJECT_SOURCE_DIR}/TaiyouUI)
+target_link_libraries(<Project Name> <PUBLIC|PRIVATE> TaiyouUI)
 ```
