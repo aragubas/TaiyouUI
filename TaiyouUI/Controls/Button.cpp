@@ -6,12 +6,9 @@ Button::Button()
     backgroundRect = SDL_Rect();
 }
 
-
 void Button::Update(double deltaTime)
 {
-
 }
-
 
 void Button::Draw(SDL_Renderer *renderer, double deltaTime)
 {

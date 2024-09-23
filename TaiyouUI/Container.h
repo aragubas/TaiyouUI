@@ -2,8 +2,11 @@
 #include <vector>
 #include "Control.h"
 
-enum ContainerType {
-    Center, DockFill, List
+enum ContainerType
+{
+    Center,
+    DockFill,
+    List
 };
 
 class Container : public Control
@@ -14,12 +17,12 @@ class Container : public Control
     void BuildDockFill();
     void BuildList();
 
-public:    
-    std::vector<Control*> Controls;
+public:
+    std::vector<Control *> Controls;
     ContainerType Type;
 
     Container();
 
     void Update(double deltaTime);
-    void Draw(SDL_Renderer* renderer, double deltaTime);
+    void Draw(SDL_Renderer *renderer, double deltaTime);
 };

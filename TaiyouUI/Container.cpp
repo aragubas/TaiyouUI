@@ -3,7 +3,8 @@
 void Container::BuildUI()
 {
     // Check if there's at least one component
-    if (Controls.size() == 0) return;
+    if (Controls.size() == 0)
+        return;
 
     switch (Type)
     {
@@ -18,7 +19,7 @@ void Container::BuildUI()
     case ContainerType::List:
         BuildList();
         break;
-    
+
     default:
         break;
     }
@@ -26,8 +27,8 @@ void Container::BuildUI()
 
 void Container::BuildCenter()
 {
-    Control* control = Controls[0];
-    
+    Control *control = Controls[0];
+
     // Constrain control to minimum size
     control->Size = control->MinimumSize;
 
@@ -38,18 +39,15 @@ void Container::BuildCenter()
 // TODO: Implement DockFill
 void Container::BuildDockFill()
 {
-
 }
 
 // TODO: Implement List
 void Container::BuildList()
 {
-
 }
 
 Container::Container()
 {
-
 }
 
 void Container::Update(double deltaTime)
@@ -60,5 +58,4 @@ void Container::Update(double deltaTime)
 
 void Container::Draw(SDL_Renderer *renderer, double deltaTime)
 {
-
 }

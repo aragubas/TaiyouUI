@@ -8,9 +8,9 @@ class Button : public Control
 
 public:
     std::string Text;
-    
+
     Button();
-    
+
     void Update(double deltaTime) override;
-    void Draw(SDL_Renderer* renderer, double deltaTime) override;
+    void Draw(SDL_Renderer *renderer, double deltaTime) override;
 };
