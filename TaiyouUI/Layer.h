@@ -2,9 +2,8 @@
 #include "Container.h"
 
 /// @brief A UI Layer, which represents a Layer with UI contents to be rendered by UIRoot
-class Layer
+struct Layer
 {
-public:
     /// @brief Assigned by UIRoot, unique ID for the layer
     unsigned int Id;
 
@@ -12,5 +11,4 @@ public:
     Container *RootContainer;
 
     Layer(unsigned int id);
-    ~Layer();
 };
