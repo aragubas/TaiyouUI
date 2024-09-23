@@ -8,13 +8,13 @@
 /// @brief Controls input flow, manages rendering and activation/de-activation of the UI Layer Stack
 class UIRoot
 {
-	std::vector<Layer *> m_Layers;
+	std::vector<Layer> m_Layers;
 
 public:
 	UIRoot();
 
-	/// @brief Adds the layer into the internal layer stack and return the Layer index
-	/// @param layer Layer pointer (do no free this pointer, as it's managed by UIRoot)
+	/// @brief Adds the layer into the internal layer stack and returns the layer pointer
+	/// @param container Container pointer
 	/// @return
 	Layer *CreateLayer(Container *container);
 

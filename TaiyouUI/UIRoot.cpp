@@ -1,21 +1,21 @@
 #include "UIRoot.h"
 #include "InputEvent.h"
 
-UIRoot::UIRoot() : m_Layers(std::vector<Layer *>())
+UIRoot::UIRoot() : m_Layers(std::vector<Layer>())
 {
 }
 
-Layer* UIRoot::CreateLayer(Container *container)
+Layer *UIRoot::CreateLayer(Container *container)
 {
     unsigned int index = m_Layers.size() + 1;
-    Layer *layer = new Layer(index);
+    Layer layer = Layer(index);
 
-    layer->RootContainer = container;
+    layer.RootContainer = container;
 
     m_Layers.push_back(layer);
 
-    return layer;
-}   
+    return &layer;
+}
 
 void UIRoot::RemoveLayer(unsigned int index)
 {
@@ -24,17 +24,17 @@ void UIRoot::RemoveLayer(unsigned int index)
 
 void UIRoot::Update(double deltaTime)
 {
-    for (Layer *layer : m_Layers)
+    for (Layer layer : m_Layers)
     {
-        layer->RootContainer->Update(deltaTime);
+        layer.RootContainer->Update(deltaTime);
     }
 }
 
 void UIRoot::Draw(SDL_Renderer *renderer, double deltaTime)
 {
-    for (Layer *layer : m_Layers)
+    for (Layer layer : m_Layers)
     {
-        layer->RootContainer->Draw(renderer, deltaTime);
+        layer.RootContainer->Draw(renderer, deltaTime);
     }
 }
 
