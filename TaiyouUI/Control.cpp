@@ -13,7 +13,7 @@ void Control::Draw(SDL_Renderer *renderer, double deltaTime)
     newViewport.h = Size.y;
     SDL_RenderSetViewport(renderer, &newViewport);
 
-    Draw(renderer, deltaTime);
+    OnDraw(renderer, deltaTime);
 
     SDL_RenderSetViewport(renderer, &oldViewport);
 }
