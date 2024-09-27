@@ -8,7 +8,7 @@
 /// @brief Controls input flow, manages rendering and activation/de-activation of the UI Layer Stack
 class UIRoot
 {
-	std::vector<Layer> m_Layers;
+	std::vector<Layer *> m_Layers;
 
 public:
 	UIRoot();

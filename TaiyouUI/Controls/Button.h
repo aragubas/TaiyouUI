@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <SDL2/SDL_ttf.h>
 #include "../Control.h"
 
 class Button : public Control
@@ -12,5 +13,7 @@ public:
     Button();
 
     void Update(double deltaTime) override;
-    void Draw(SDL_Renderer *renderer, double deltaTime) override;
+
+private:
+    void OnDraw(SDL_Renderer *renderer, double deltaTime) override;
 };

@@ -23,6 +23,8 @@ public:
 
     Container();
 
-    void Update(double deltaTime);
-    void Draw(SDL_Renderer *renderer, double deltaTime);
+    void Update(double deltaTime) override;
+
+private:
+    void OnDraw(SDL_Renderer *renderer, double deltaTime) override;
 };
