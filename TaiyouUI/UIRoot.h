@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <memory>
+#include <SDL2/SDL.h>
 #include "Layer.h"
 #include "Container.h"
 
@@ -11,6 +12,8 @@ class UIRoot
 	std::vector<Layer *> m_Layers;
 
 public:
+	SDL_Point Size;
+
 	UIRoot();
 
 	/// @brief Adds the layer into the internal layer stack and returns the layer pointer
