@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.28)
 project("TaiyouUI")
 
 # Define optional features
+# TODO: Add optional test project feature
 option(TAIYOUI_TEST_PROJECT "Additional binary target for testing TaiyouUI" OFF)
 
 
