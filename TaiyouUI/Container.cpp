@@ -50,6 +50,26 @@ Container::Container()
 {
 }
 
+void Container::EventUpdate(SDL_Event &event)
+{
+    if (Controls.size() == 0 || (Size.x == 0 || Size.y == 0))
+        return;
+
+    using LayersReverseIterator = std::vector<Control *>::const_reverse_iterator;
+
+    for (LayersReverseIterator it = Controls.rbegin();
+         it != Controls.rend(); it++)
+    {
+        it[0]->EventUpdate(event);
+    }
+}
+
+void Container::AddControl(Control *control)
+{
+    control->ParentControl = this;
+    Controls.push_back(control);
+}
+
 void Container::Update(double deltaTime)
 {
     // Build the UI every frame
