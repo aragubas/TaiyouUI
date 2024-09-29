@@ -1,11 +1,15 @@
 #include "UIRoot.h"
 #include "InputEvent.h"
 
-UIRoot::UIRoot() : m_Layers(std::vector<Layer *>())
+UIRoot::UIRoot(SDL_Renderer *renderer, SDL_Window *window) : m_Layers(std::vector<Layer *>())
 {
     Size = SDL_Point();
     Size.x = 0;
     Size.y = 0;
+
+    Context = UIRootContext();
+    Context.Renderer = renderer;
+    Context.Window = window;
 }
 
 Layer *UIRoot::CreateLayer(Container *container)
@@ -51,6 +55,14 @@ void UIRoot::Draw(SDL_Renderer *renderer, double deltaTime)
     }
 }
 
-void UIRoot::EventUpdate(SDL_Event event)
+void UIRoot::EventUpdate(SDL_Event &event)
 {
+    return;
+    using LayersReverseIterator = std::vector<Layer *>::const_reverse_iterator;
+
+    for (LayersReverseIterator it = m_Layers.rbegin();
+         it != m_Layers.rend(); it++)
+    {
+        it[0]->RootContainer->EventUpdate(event);
+    }
 }

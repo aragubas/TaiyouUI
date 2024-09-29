@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include "Layer.h"
 #include "Container.h"
+#include "UIRootContext.h"
 
 /// @brief Controls input flow, manages rendering and activation/de-activation of the UI Layer Stack
 class UIRoot
@@ -13,8 +14,9 @@ class UIRoot
 
 public:
 	SDL_Point Size;
+	UIRootContext Context;
 
-	UIRoot();
+	UIRoot(SDL_Renderer *renderer, SDL_Window *window);
 
 	/// @brief Adds the layer into the internal layer stack and returns the layer pointer
 	/// @param container Container pointer
@@ -27,5 +29,5 @@ public:
 
 	void Update(double deltaTime);
 	void Draw(SDL_Renderer *renderer, double deltaTime);
-	void EventUpdate(SDL_Event event);
+	void EventUpdate(SDL_Event &event);
 };
