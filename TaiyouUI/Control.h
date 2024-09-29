@@ -1,10 +1,12 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include "Control.h"
+#include "UIRootContext.h"
 
 class Control
 {
 public:
+    UIRootContext *UIRootContext;
     Control *ParentControl;
     /// @brief Relative position inside parent container
     SDL_FPoint RelativePosition;
@@ -28,6 +30,7 @@ public:
     bool IsEnabled = true;
 
     virtual void Update(double deltaTime) = 0;
+    virtual void EventUpdate(SDL_Event &event) = 0;
     void Draw(SDL_Renderer *renderer, double deltaTime);
 
 private:
