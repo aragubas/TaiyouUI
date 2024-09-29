@@ -24,6 +24,8 @@ public:
     Container();
 
     void Update(double deltaTime) override;
+    void EventUpdate(SDL_Event &event) override;
+    void AddControl(Control *control);
 
 private:
     void OnDraw(SDL_Renderer *renderer, double deltaTime) override;
