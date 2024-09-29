@@ -16,7 +16,7 @@ find_package(SDL2_ttf CONFIG REQUIRED)
 # Define library project
 add_library(TaiyouUI STATIC
   "TaiyouUI/UIRoot.h" "TaiyouUI/UIRoot.cpp" "TaiyouUI/Control.h" "TaiyouUI/Control.cpp" "TaiyouUI/Container.h" "TaiyouUI/Container.cpp"
-  "TaiyouUI/Layer.h" "TaiyouUI/Layer.cpp" "TaiyouUI/Controls/Button.h" "TaiyouUI/Controls/Button.cpp"
+  "TaiyouUI/Layer.h" "TaiyouUI/Layer.cpp" "TaiyouUI/Controls/Button.h" "TaiyouUI/Controls/Button.cpp" "TaiyouUI/UIRootContext.h"
 )
 
 # Set C++ standard to 20
