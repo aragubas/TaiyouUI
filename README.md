@@ -20,6 +20,6 @@ target_link_libraries(<Project Name> <PUBLIC|PRIVATE> TaiyouUI)
 # License
 This project is licensed under the AGPL 3.0 license
 
-Check [License](./LICENSE) for more details
+Check [License](./LICENSE.md) for more details
 
 (C) 2022 - 2024 by Aragubas - part of Taiyou Software Suite
