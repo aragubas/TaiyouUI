@@ -1,11 +1,12 @@
 #include "Button.h"
 #include <stdio.h>
 
-Button::Button(struct UIRootContext context) : m_Text(std::string()), m_TextTexture(nullptr)
+Button::Button(struct UIRootContext *context) : m_Text(std::string()), m_TextTexture(nullptr)
 {
     MinimumSize = SDL_FPoint();
     MinimumSize.x = 500;
     MinimumSize.y = 120;
+    UIRootContext = context;
 
     m_Font = TTF_OpenFont("./Application Data/Fonts/Inter-Variable.ttf", 20);
     if (m_Font == NULL)

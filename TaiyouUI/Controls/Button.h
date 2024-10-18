@@ -13,7 +13,7 @@ class Button : public Control
     std::string m_Text;
 
 public:
-    Button(struct UIRootContext context);
+    Button(struct UIRootContext *context);
     ~Button();
 
     void Update(double deltaTime) override;
