@@ -5,23 +5,29 @@
 #include <iostream>
 #include "../Control.h"
 #include "../UIRootContext.h"
+#include <TaiyouUI/Turk/FontDescriptor.h>
+using namespace TaiyouUI::Turk;
 
-class Button : public Control
+
+namespace TaiyouUI::Controls
 {
-    SDL_Texture *m_TextTexture;
-    TTF_Font *m_Font;
-    std::string m_Text;
+    class Button : public Control
+    {
+        SDL_Texture *m_TextTexture;
+        FontDescriptor m_Font;
+        std::string m_Text;
 
-public:
-    Button(struct UIRootContext *context);
-    ~Button();
+    public:
+        Button(struct UIRootContext *context);
+        ~Button();
 
-    void Update(double deltaTime) override;
-    void EventUpdate(SDL_Event &event) override;
+        void Update(double deltaTime) override;
+        void EventUpdate(SDL_Event &event) override;
 
-    void SetText(std::string Text);
-    std::string GetText() const;
+        void SetText(std::string Text);
+        std::string GetText() const;
 
-private:
-    void OnDraw(SDL_Renderer *renderer, double deltaTime) override;
-};
+    private:
+        void OnDraw(SDL_Renderer *renderer, double deltaTime) override;
+    };
+}

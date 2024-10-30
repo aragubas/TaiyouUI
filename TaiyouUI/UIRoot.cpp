@@ -1,7 +1,10 @@
 #include "UIRoot.h"
 #include "InputEvent.h"
+using namespace TaiyouUI;
 
-UIRoot::UIRoot(SDL_Renderer *renderer, SDL_Window *window) : m_Layers(std::vector<Layer *>())
+
+UIRoot::UIRoot(SDL_Renderer *renderer, SDL_Window *window) : 
+    m_Layers(std::vector<Layer *>()), Turk(renderer, window)
 {
     Size = SDL_Point();
     Size.x = 0;
@@ -10,6 +13,7 @@ UIRoot::UIRoot(SDL_Renderer *renderer, SDL_Window *window) : m_Layers(std::vecto
     Context = UIRootContext();
     Context.Renderer = renderer;
     Context.Window = window;
+    Context.Turk = &Turk;
 }
 
 Layer *UIRoot::CreateLayer(Container *container)

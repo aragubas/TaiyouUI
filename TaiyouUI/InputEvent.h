@@ -1,9 +1,12 @@
 #pragma once
-
 #include <SDL.h>
 
-struct InputEvent
+
+namespace TaiyouUI
 {
-    bool IsKeyboardEvent;
-    bool IsGamepadEvent;
-};
+    struct InputEvent
+    {
+        bool IsKeyboardEvent;
+        bool IsGamepadEvent;
+    };
+}

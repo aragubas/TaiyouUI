@@ -1,4 +1,6 @@
 #include "Container.h"
+using namespace TaiyouUI;
+
 
 void Container::BuildUI()
 {
@@ -46,7 +48,8 @@ void Container::BuildList()
 {
 }
 
-Container::Container()
+Container::Container() : 
+    Type(ContainerType::Center), Controls(std::vector<Control *>())
 {
 }
 

@@ -1,34 +1,34 @@
 #include "Button.h"
 #include <stdio.h>
+using namespace TaiyouUI;
 
-Button::Button(struct UIRootContext *context) : m_Text(std::string()), m_TextTexture(nullptr)
+
+Controls::Button::Button(struct UIRootContext *context) : 
+    m_Text(std::string()), m_TextTexture(nullptr)
 {
     MinimumSize = SDL_FPoint();
     MinimumSize.x = 500;
     MinimumSize.y = 120;
     UIRootContext = context;
 
-    m_Font = TTF_OpenFont("./Application Data/Fonts/Inter-Variable.ttf", 20);
-    if (m_Font == NULL)
-    {
-        throw "Default font not found";
-    }
+    // TODO: Replace with TURK
+    m_Font = UIRootContext->Turk->GetFontDescriptor("Inter-Variable", 18);
 }
 
-Button::~Button()
+Controls::Button::~Button()
 {
     SDL_DestroyTexture(m_TextTexture);
 }
 
-void Button::EventUpdate(SDL_Event &event)
+void Controls::Button::EventUpdate(SDL_Event &event)
 {
 }
 
-void Button::Update(double deltaTime)
+void Controls::Button::Update(double deltaTime)
 {
 }
 
-void Button::OnDraw(SDL_Renderer *renderer, double deltaTime)
+void Controls::Button::OnDraw(SDL_Renderer *renderer, double deltaTime)
 {
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_Rect size = SDL_Rect();
@@ -39,7 +39,7 @@ void Button::OnDraw(SDL_Renderer *renderer, double deltaTime)
     SDL_RenderFillRect(renderer, &size);
 }
 
-void Button::SetText(std::string text)
+void Controls::Button::SetText(std::string text)
 {
     m_Text = text;
 
@@ -58,14 +58,14 @@ void Button::SetText(std::string text)
     backgroundColor.g = 0;
     backgroundColor.b = 0;
 
-    SDL_Surface *fontSurface = TTF_RenderText_LCD(m_Font, m_Text.c_str(), foregroundColor, backgroundColor);
+    SDL_Surface *fontSurface = TTF_RenderText_LCD(UIRootContext->Turk->GetFont(m_Font), m_Text.c_str(), foregroundColor, backgroundColor);
 
-    // SDL_CreateTextureFromSurface()
+    m_TextTexture = SDL_CreateTextureFromSurface(UIRootContext->Renderer, fontSurface);
 
     SDL_FreeSurface(fontSurface);
 }
 
-std::string Button::GetText() const
+std::string Controls::Button::GetText() const
 {
     return m_Text;
 }

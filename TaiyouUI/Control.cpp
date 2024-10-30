@@ -1,4 +1,17 @@
 #include "Control.h"
+#include <iostream>
+using namespace TaiyouUI;
+
+
+TaiyouUI::Control::Control() :
+    UIRootContext(nullptr), RelativePosition(SDL_FPoint(0, 0)),
+    AbsolutePosition(SDL_FPoint(0, 0)), MinimumSize(SDL_FPoint(0, 0)),
+    MaximumSize(SDL_FPoint(0, 0)), Size(SDL_FPoint(0, 0)),
+    IsVisible(true), IsEnabled(true),
+    ParentControl(nullptr)
+{
+    std::cout << "Base constructor called" << std::endl;
+}
 
 void Control::Draw(SDL_Renderer *renderer, double deltaTime)
 {
