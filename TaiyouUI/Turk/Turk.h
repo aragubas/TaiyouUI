@@ -3,6 +3,7 @@
 #include <SDL2/SDL_ttf.h>
 #include "FontDescriptor.h"
 #include "FontDescriptorHasher.h"
+#include <string>
 
 
 namespace TaiyouUI::Turk
@@ -22,7 +23,7 @@ namespace TaiyouUI::Turk
 		/// <param name="fontName"></param>
 		/// <param name="fontSize"></param>
 		/// <returns></returns>
-		FontDescriptor GetFontDescriptor(const char* fontName, int fontSize);
+		FontDescriptor GetFontDescriptor(std::string fontName, int fontSize);
 		/// <summary>
 		/// Returns precached font (if exists)
 		/// </summary>
@@ -36,6 +37,7 @@ namespace TaiyouUI::Turk
 
 		std::unordered_map<FontDescriptor, TTF_Font*, FontDescriptorHasher> m_Fonts;
 
-		TTF_Font* m_LoadFont(const char* fontName, int fontSize);
+		TTF_Font* m_LoadFont(std::string fontName, int fontSize);
+		std::string NormalizeFontName(std::string fontName);
 	};
 }

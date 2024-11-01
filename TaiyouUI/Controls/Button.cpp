@@ -4,7 +4,8 @@ using namespace TaiyouUI;
 
 
 Controls::Button::Button(struct UIRootContext *context) : 
-    m_Text(std::string()), m_TextTexture(nullptr)
+    m_Text(std::string()), m_TextTexture(nullptr),
+    m_TextTextureSize(SDL_Point())
 {
     MinimumSize = SDL_FPoint();
     MinimumSize.x = 500;
@@ -37,6 +38,14 @@ void Controls::Button::OnDraw(SDL_Renderer *renderer, double deltaTime)
     size.w = Size.x;
     size.h = Size.y;
     SDL_RenderFillRect(renderer, &size);
+    
+    SDL_Rect destRect = SDL_Rect();
+    destRect.x = Size.x / 2 - m_TextTextureSize.x / 2;
+    destRect.y = Size.y / 2 - m_TextTextureSize.y / 2;
+    destRect.w = m_TextTextureSize.x;
+    destRect.h = m_TextTextureSize.y;
+
+    SDL_RenderCopy(renderer, m_TextTexture, NULL, &destRect);
 }
 
 void Controls::Button::SetText(std::string text)
@@ -54,13 +63,20 @@ void Controls::Button::SetText(std::string text)
 
     SDL_Color backgroundColor = SDL_Color();
     backgroundColor.a = 0;
-    backgroundColor.r = 0;
-    backgroundColor.g = 0;
-    backgroundColor.b = 0;
+    backgroundColor.r = 255;
+    backgroundColor.g = 255;
+    backgroundColor.b = 255;
 
-    SDL_Surface *fontSurface = TTF_RenderText_LCD(UIRootContext->Turk->GetFont(m_Font), m_Text.c_str(), foregroundColor, backgroundColor);
+    SDL_Surface *fontSurface = TTF_RenderUTF8_Blended(UIRootContext->Turk->GetFont(m_Font), m_Text.c_str(), foregroundColor);
 
     m_TextTexture = SDL_CreateTextureFromSurface(UIRootContext->Renderer, fontSurface);
+    SDL_SetTextureBlendMode(m_TextTexture, SDL_BLENDMODE_BLEND);
+
+    int sizeW, sizeH = 0;
+    SDL_QueryTexture(m_TextTexture, NULL, NULL, &sizeW, &sizeH);
+
+    m_TextTextureSize.x = sizeW;
+    m_TextTextureSize.y = sizeH;
 
     SDL_FreeSurface(fontSurface);
 }

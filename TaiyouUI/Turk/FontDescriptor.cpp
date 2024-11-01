@@ -5,7 +5,7 @@ TaiyouUI::Turk::FontDescriptor::FontDescriptor() :
 {
 }
 
-TaiyouUI::Turk::FontDescriptor::FontDescriptor(const char* name, int size) :
+TaiyouUI::Turk::FontDescriptor::FontDescriptor(std::string name, int size) :
 	Name(name), Size(size)
 {
 }

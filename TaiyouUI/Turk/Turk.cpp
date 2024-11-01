@@ -2,6 +2,7 @@
 #include <string>
 #include <filesystem>
 #include <iostream>
+#include <fmt/printf.h>
 using namespace TaiyouUI::Turk;
 
 
@@ -22,17 +23,16 @@ Turk::Turk::~Turk()
 	}
 }
 
-FontDescriptor TaiyouUI::Turk::Turk::GetFontDescriptor(const char* fontName, int fontSize)
+FontDescriptor TaiyouUI::Turk::Turk::GetFontDescriptor(std::string fontName, int fontSize)
 {
 	FontDescriptor descriptor;
-	descriptor.Name = fontName;
+	descriptor.Name = NormalizeFontName(fontName);
 	descriptor.Size = fontSize;
 	
 	// Check if font resource already exists
 	if (m_Fonts.contains(descriptor))
 		return descriptor;
 	
-
 	m_LoadFont(fontName, fontSize);
 
 	return descriptor;
@@ -47,23 +47,12 @@ TTF_Font* Turk::GetFont(FontDescriptor fontDescriptor)
 	return m_LoadFont(fontDescriptor.Name, fontDescriptor.Size);
 }
 
-TTF_Font* Turk::Turk::m_LoadFont(const char* fontName, int fontSize)
+TTF_Font* Turk::Turk::m_LoadFont(std::string fontName, int fontSize)
 {
-	// Normalize fontName
-	const char* finalFontName;
-	std::string fontNameAsString = std::string(fontName);
-
-	if (fontNameAsString.ends_with(".ttf"))
-	{
-		// Remove .ttf from the end of name
-		fontNameAsString = fontNameAsString.replace(fontNameAsString.find_last_of(".ttf", 4), 4, "");
-	}
-	fontNameAsString.append(".ttf");
-	finalFontName = fontNameAsString.c_str();
-
+	fontName = NormalizeFontName(fontName);
 
 	// Check if font exists in cache
-	FontDescriptor fontDescriptor(finalFontName, fontSize);
+	FontDescriptor fontDescriptor(fontName, fontSize);
 
 	if (m_Fonts.contains(fontDescriptor))
 	{
@@ -72,7 +61,7 @@ TTF_Font* Turk::Turk::m_LoadFont(const char* fontName, int fontSize)
 	}
 
 	// Add font to cache
-	std::filesystem::path fontPath = std::filesystem::path("Application Data") / "Fonts" / finalFontName;
+	std::filesystem::path fontPath = std::filesystem::path("Application Data") / "Fonts" / fontName;
 	TTF_Font* newFont = TTF_OpenFont(fontPath.string().c_str(), fontSize);
 
 	if (newFont == nullptr)
@@ -84,5 +73,18 @@ TTF_Font* Turk::Turk::m_LoadFont(const char* fontName, int fontSize)
 		throw std::runtime_error(error);
 	}
 
+	fmt::printf("[Debug] Turk::m_LoadFont new font loaded: name: \"%s\" size: \"%i\"\n", fontDescriptor.Name, fontDescriptor.Size);
+	
 	m_Fonts[fontDescriptor] = newFont;
+}
+
+std::string Turk::Turk::NormalizeFontName(std::string fontName)
+{
+	if (fontName.ends_with(".ttf"))
+	{
+		return fontName;
+	}
+	fontName.append(".ttf");
+
+	return fontName;
 }

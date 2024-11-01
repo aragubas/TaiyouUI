@@ -14,6 +14,7 @@ namespace TaiyouUI::Controls
     class Button : public Control
     {
         SDL_Texture *m_TextTexture;
+        SDL_Point m_TextTextureSize;
         FontDescriptor m_Font;
         std::string m_Text;
 
