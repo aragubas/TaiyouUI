@@ -13,7 +13,7 @@ Controls::Button::Button(struct UIRootContext *context) :
     UIRootContext = context;
 
     // TODO: Replace with TURK
-    m_Font = UIRootContext->Turk->GetFontDescriptor("Inter-Variable", 18);
+    m_Font = UIRootContext->Turk->GetFontDescriptor("Inter-Variable", 24);
 }
 
 Controls::Button::~Button()
@@ -27,11 +27,13 @@ void Controls::Button::EventUpdate(SDL_Event &event)
 
 void Controls::Button::Update(double deltaTime)
 {
+    MinimumSize.x = m_TextTextureSize.x + 12;
+    MinimumSize.y = m_TextTextureSize.y + 8;
 }
 
 void Controls::Button::OnDraw(SDL_Renderer *renderer, double deltaTime)
 {
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 32, 145, 5, 255);
     SDL_Rect size = SDL_Rect();
     size.x = 0;
     size.y = 0;
