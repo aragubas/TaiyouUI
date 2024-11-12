@@ -37,7 +37,7 @@ namespace TaiyouUI::Turk
 
 		std::unordered_map<FontDescriptor, TTF_Font*, FontDescriptorHasher> m_Fonts;
 
-		TTF_Font* m_LoadFont(std::string fontName, int fontSize);
+		TTF_Font* m_LoadFont(const std::string &fontName, int fontSize);
 		std::string NormalizeFontName(std::string fontName);
 	};
 }
