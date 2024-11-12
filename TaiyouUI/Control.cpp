@@ -10,7 +10,7 @@ TaiyouUI::Control::Control() :
     IsVisible(true), IsEnabled(true),
     ParentControl(nullptr)
 {
-    std::cout << "Base constructor called" << std::endl;
+    // TODO: Add initialization logic for controls
 }
 
 void Control::Draw(SDL_Renderer *renderer, double deltaTime)
