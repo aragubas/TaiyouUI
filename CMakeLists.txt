@@ -22,6 +22,9 @@ add_library(TaiyouUI STATIC
 
 # Set C++ standard to 20
 set_property(TARGET TaiyouUI PROPERTY CXX_STANDARD 20)
+# Treat warnings as errors
+set_property(TARGET TaiyouUI PROPERTY COMPILE_WARNING_AS_ERROR ON)
+
 
 # Set target dependencies
 target_link_libraries(TaiyouUI PRIVATE fmt::fmt)
