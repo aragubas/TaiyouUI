@@ -29,5 +29,6 @@ set_property(TARGET TaiyouUI PROPERTY COMPILE_WARNING_AS_ERROR ON)
 # Set target dependencies
 target_link_libraries(TaiyouUI PRIVATE fmt::fmt)
 target_link_libraries(TaiyouUI PUBLIC SDL2::SDL2)
-target_link_libraries(TaiyouUI PUBLIC SDL2_ttf::SDL2_ttf)
+# idk how the $<IF: part works, vcpkg told me this would work so I trust it :)
+target_link_libraries(TaiyouUI PRIVATE $<IF:$<TARGET_EXISTS:SDL2_ttf::SDL2_ttf>,SDL2_ttf::SDL2_ttf,SDL2_ttf::SDL2_ttf-static>)
 target_include_directories(TaiyouUI PUBLIC ./)
