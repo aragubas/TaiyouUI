@@ -9,7 +9,7 @@ namespace TaiyouUI
     class Control
     {
     public:
-        UIRootContext *UIRootContext;
+        UIRootContext *Context;
         Control *ParentControl;
         /// @brief Relative position inside parent container
         SDL_FPoint RelativePosition;

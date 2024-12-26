@@ -10,10 +10,10 @@ Controls::Button::Button(struct UIRootContext *context) :
     MinimumSize = SDL_FPoint();
     MinimumSize.x = 500;
     MinimumSize.y = 120;
-    UIRootContext = context;
+    Context = context;
 
     // TODO: Replace with TURK
-    m_Font = UIRootContext->Turk->GetFontDescriptor("Inter-Variable", 24);
+    m_Font = Context->Turk->GetFontDescriptor("Inter-Variable", 24);
 }
 
 Controls::Button::~Button()
@@ -69,9 +69,9 @@ void Controls::Button::SetText(std::string text)
     backgroundColor.g = 255;
     backgroundColor.b = 255;
 
-    SDL_Surface *fontSurface = TTF_RenderUTF8_Blended(UIRootContext->Turk->GetFont(m_Font), m_Text.c_str(), foregroundColor);
+    SDL_Surface *fontSurface = TTF_RenderUTF8_Blended(Context->Turk->GetFont(m_Font), m_Text.c_str(), foregroundColor);
 
-    m_TextTexture = SDL_CreateTextureFromSurface(UIRootContext->Renderer, fontSurface);
+    m_TextTexture = SDL_CreateTextureFromSurface(Context->Renderer, fontSurface);
     SDL_SetTextureBlendMode(m_TextTexture, SDL_BLENDMODE_BLEND);
 
     int sizeW, sizeH = 0;
