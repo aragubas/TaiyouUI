@@ -1,6 +1,14 @@
 #include "Container.h"
+#include "TaiyouUI/UIRootContext.h"
 using namespace TaiyouUI;
 
+
+Container::Container(const UIRootContext& context, ContainerType type, Control* parentControl) : 
+    Control(context, parentControl), Type(type),
+    Controls(std::vector<Control *>())
+{
+    
+}
 
 void Container::BuildUI()
 {
@@ -29,6 +37,7 @@ void Container::BuildUI()
 
 void Container::BuildCenter()
 {
+    // Get pointer to the first control in the list
     Control *control = Controls[0];
 
     // Constrain control to minimum size
@@ -48,10 +57,6 @@ void Container::BuildList()
 {
 }
 
-Container::Container() : 
-    Type(ContainerType::Center), Controls(std::vector<Control *>())
-{
-}
 
 void Container::EventUpdate(SDL_Event &event)
 {

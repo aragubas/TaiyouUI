@@ -2,7 +2,6 @@
 #include <string>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL.h>
-#include <iostream>
 #include "../Control.h"
 #include "../UIRootContext.h"
 #include <TaiyouUI/Turk/FontDescriptor.h>
@@ -11,24 +10,39 @@ using namespace TaiyouUI::Turk;
 
 namespace TaiyouUI::Controls
 {
+    enum TaiyouButtonState : char
+    {
+        Idle,
+        Hovering,
+        Pressed,
+    };
+
     class Button : public Control
     {
-        SDL_Texture *m_TextTexture;
-        SDL_Point m_TextTextureSize;
-        FontDescriptor m_Font;
-        std::string m_Text;
+        SDL_Texture *TextTexture;
+        SDL_Point TextTextureSize;
+        FontDescriptor Font;
 
     public:
-        Button(struct UIRootContext *context);
+        Button(const UIRootContext& context, const std::string& text, Control* parentControl = nullptr);
         ~Button();
 
         void Update(double deltaTime) override;
         void EventUpdate(SDL_Event &event) override;
 
-        void SetText(std::string Text);
+        void SetText(const std::string& Text);
         std::string GetText() const;
 
     private:
+        SDL_Color m_CurrentBackgroundColor;
+        SDL_Color m_CurrentForegroundColor;
+        SDL_Color m_TargetBackgroundColor;
+        SDL_Color m_TargetForegroundColor;
+        std::string m_Text;
+        TaiyouButtonState m_CurrentState;
+        TaiyouButtonState m_LastState;
+
         void OnDraw(SDL_Renderer *renderer, double deltaTime) override;
+        void SetAnimationState(const TaiyouButtonState newState);
     };
 }

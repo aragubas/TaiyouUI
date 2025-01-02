@@ -1,20 +1,22 @@
 #include "Control.h"
-#include <iostream>
+#include "TaiyouUI/UIRootContext.h"
 using namespace TaiyouUI;
 
 
-TaiyouUI::Control::Control() :
-    Context(nullptr), RelativePosition(SDL_FPoint(0, 0)),
-    AbsolutePosition(SDL_FPoint(0, 0)), MinimumSize(SDL_FPoint(0, 0)),
-    MaximumSize(SDL_FPoint(0, 0)), Size(SDL_FPoint(0, 0)),
-    IsVisible(true), IsEnabled(true),
-    ParentControl(nullptr)
+TaiyouUI::Control::Control(const UIRootContext& context, Control* parentControl) :
+    Context(context), ParentControl(parentControl), 
+    RelativePosition(SDL_FPoint(0, 0)), AbsolutePosition(SDL_FPoint(0, 0)), 
+    MinimumSize(SDL_FPoint(0, 0)), MaximumSize(SDL_FPoint(0, 0)), 
+    Size(SDL_FPoint(0, 0)), Visibility(ControlVisibility::VisibleEnabled)
 {
     // TODO: Add initialization logic for controls
 }
 
 void Control::Draw(SDL_Renderer *renderer, double deltaTime)
 {
+    // Don't render anything if the control is meant to be invisible
+    if (Visibility == ControlVisibility::Invisible) return;
+
     SDL_Rect oldViewport = SDL_Rect();
     SDL_RenderGetViewport(renderer, &oldViewport);
     

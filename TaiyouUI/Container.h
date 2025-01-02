@@ -5,7 +5,7 @@
 
 namespace TaiyouUI
 {
-    enum ContainerType
+    enum ContainerType : char
     {
         Center,
         DockFill,
@@ -23,8 +23,8 @@ namespace TaiyouUI
     public:
         std::vector<Control *> Controls;
         ContainerType Type;
-
-        Container();
+        
+        Container(const UIRootContext& context, ContainerType type = ContainerType::Center, Control* parentControl = nullptr);
 
         void Update(double deltaTime) override;
         void EventUpdate(SDL_Event &event) override;
