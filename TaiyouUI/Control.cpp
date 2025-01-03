@@ -4,7 +4,7 @@
 using namespace TaiyouUI;
 
 
-TaiyouUI::Control::Control(const UIRootContext& context, Control* parentControl) :
+Control::Control(const UIRootContext& context, Control* parentControl) :
     Context(context), ParentControl(parentControl), 
     RelativePosition(SDL_FPoint(0, 0)), AbsolutePosition(SDL_FPoint(0, 0)), 
     MinimumSize(SDL_FPoint(0, 0)), MaximumSize(SDL_FPoint(0, 0)), 
