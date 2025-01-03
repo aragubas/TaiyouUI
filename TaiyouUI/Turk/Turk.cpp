@@ -98,3 +98,8 @@ std::string Turk::Turk::NormalizeFontName(std::string fontName)
 
 	return fontName;
 }
+
+void Turk::Turk::LogWarning(const std::string& message)
+{
+	fmt::printf("[Turk::LogWarning] %s\n", message);
+}

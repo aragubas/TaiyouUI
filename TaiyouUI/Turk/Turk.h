@@ -31,6 +31,9 @@ namespace TaiyouUI::Turk
 		/// <returns></returns>
 		TTF_Font* GetFont(FontDescriptor fontDescriptor);
 
+		// Logging Utilities
+		void LogWarning(const std::string& message);
+
 	private:
 		SDL_Renderer* m_Renderer;
 		SDL_Window* m_Window;
