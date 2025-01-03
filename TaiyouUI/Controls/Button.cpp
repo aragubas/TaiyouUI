@@ -74,18 +74,14 @@ void Controls::Button::EventUpdate(SDL_Event &event)
             if (event.type == SDL_MOUSEBUTTONDOWN)
             {
                 state = TaiyouButtonState::Pressed;
-                Context.Turk->LogWarning("Controls::Button; Down");
 
             } else if (event.type == SDL_MOUSEBUTTONUP && m_CurrentState == TaiyouButtonState::Pressed)
             {
                 state = TaiyouButtonState::Pressed;
                 PerformClick();
-                Context.Turk->LogWarning("Controls::Button; ligma");
 
             } else if (event.type == SDL_MOUSEMOTION && m_CurrentState == TaiyouButtonState::Idle) {
                 state = TaiyouButtonState::Hovering;
-                Context.Turk->LogWarning("Controls::Button; Hovering");
-
             }
 
             SetAnimationState(state);
