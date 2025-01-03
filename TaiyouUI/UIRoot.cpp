@@ -55,7 +55,9 @@ void UIRoot::ClearLayers()
     // Deletes every root container
     for (Layer layer : m_Layers)
     {
-        delete layer.RootContainer;
+        Container* container = layer.RootContainer;
+        if (container != nullptr)
+            delete container;
     }
 
     m_Layers.clear();
