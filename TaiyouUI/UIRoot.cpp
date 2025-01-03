@@ -1,10 +1,13 @@
 #include "UIRoot.h"
-#include "InputEvent.h"
+#include <time.h>
+#include <limits.h>
+#include <stdlib.h>
+#include <limits.h>
 using namespace TaiyouUI;
 
 
 UIRoot::UIRoot(SDL_Renderer *renderer, SDL_Window *window) : 
-    m_Layers(std::vector<Layer *>()), Turk(renderer, window)
+    m_Layers(std::vector<Layer>()), Turk(renderer, window)
 {
     Size = SDL_Point();
     Size.x = 0;
@@ -16,33 +19,58 @@ UIRoot::UIRoot(SDL_Renderer *renderer, SDL_Window *window) :
     Context.Turk = &Turk;
 }
 
-Layer *UIRoot::CreateLayer(Container *container)
+uint UIRoot::CreateLayer(Container *container)
 {
-    unsigned int index = m_Layers.size() + 1;
-    Layer *layer = new Layer(index);
+    // Source: https://cplusplus.com/reference/cstdlib/rand/
+    // Generate a random number for ID
+    srand(time(NULL));
+    unsigned int index = rand() % std::numeric_limits<uint>().max();
 
-    layer->RootContainer = container;
+    m_Layers.emplace_back(index, container);
 
-    m_Layers.push_back(layer);
-
-    return layer;
+    return index;
 }
 
-void UIRoot::RemoveLayer(unsigned int index)
+void UIRoot::RemoveLayer(unsigned int id)
 {
-    m_Layers.erase(m_Layers.begin() + index);
+    // Find layer index
+    uint foundIndex = 0;
+    for(uint i = 0; i < m_Layers.size(); i++)
+    {
+        if (m_Layers[i].Id == id)
+        {
+            foundIndex = i;
+            break;
+        }
+    }
+
+    // Deletes Root container
+    delete m_Layers[foundIndex].RootContainer;
+    
+    m_Layers.erase(m_Layers.begin() + foundIndex);
+}
+
+void UIRoot::ClearLayers()
+{
+    // Deletes every root container
+    for (Layer layer : m_Layers)
+    {
+        delete layer.RootContainer;
+    }
+
+    m_Layers.clear();
 }
 
 void UIRoot::Update(double deltaTime)
 {
     // Update every component from back to front
-    for (Layer *layer : m_Layers)
+    for (Layer layer : m_Layers)
     {
         // Set RootContainer size to current size
-        layer->RootContainer->Size.x = Size.x;
-        layer->RootContainer->Size.y = Size.y;
+        layer.RootContainer->Size.x = Size.x;
+        layer.RootContainer->Size.y = Size.y;
 
-        layer->RootContainer->Update(deltaTime);
+        layer.RootContainer->Update(deltaTime);
     }
 }
 
@@ -53,19 +81,19 @@ void UIRoot::Draw(SDL_Renderer *renderer, double deltaTime)
         return;
 
     // Draw every layer from back to front
-    for (Layer *layer : m_Layers)
+    for (Layer layer : m_Layers)
     {
-        layer->RootContainer->Draw(renderer, deltaTime);
+        layer.RootContainer->Draw(renderer, deltaTime);
     }
 }
 
 void UIRoot::EventUpdate(SDL_Event &event)
 {
-    using LayersReverseIterator = std::vector<Layer *>::const_reverse_iterator;
+    using LayersReverseIterator = std::vector<Layer>::const_reverse_iterator;
 
     for (LayersReverseIterator it = m_Layers.rbegin();
          it != m_Layers.rend(); it++)
     {
-        it[0]->RootContainer->EventUpdate(event);
+        it[0].RootContainer->EventUpdate(event);
     }
 }

@@ -13,6 +13,6 @@ namespace TaiyouUI
         /// @brief Pointer to the Root container for this layer
         Container *RootContainer;
 
-        Layer(unsigned int id);
+        Layer(unsigned int id, Container* rootContainer);
     };
 }
