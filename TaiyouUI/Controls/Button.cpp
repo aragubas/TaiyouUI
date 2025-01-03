@@ -11,23 +11,23 @@ using namespace TaiyouUI;
 
 Controls::Button::Button(const UIRootContext& context, const std::string& text, Control* parentControl) :
     Control(context, parentControl), // Base Constructor
-    m_Text(std::string()), TextTexture(nullptr),
-    TextTextureSize(SDL_Point()), m_CurrentBackgroundColor(SDL_Color()),
+    m_Text(std::string()), m_TextTexture(nullptr),
+    m_TextTextureSize(SDL_Point()), m_CurrentBackgroundColor(SDL_Color()),
     m_TargetBackgroundColor(SDL_Color()), m_CurrentForegroundColor(SDL_Color()),
-    m_TargetForegroundColor(SDL_Color())
+    m_TargetForegroundColor(SDL_Color()), OnClick(nullptr)
 {
     Padding = SDL_FPoint();
     Padding.x = 12;
     Padding.y = 4;
     
-    Font = Context.Turk->GetFontDescriptor("Inter-Variable", 16);
+    m_Font = Context.Turk->GetFontDescriptor("Inter-Variable", 16);
     SetText(text);
     SetAnimationState(Idle);
 }
 
 Controls::Button::~Button()
 {
-    SDL_DestroyTexture(TextTexture);
+    SDL_DestroyTexture(m_TextTexture);
 }
 
 void Controls::Button::Update(double deltaTime)
@@ -53,13 +53,13 @@ void Controls::Button::EventUpdate(SDL_Event &event)
     if (Visibility == ControlVisibility::VisibleDisabled) 
         return;
 
-    if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN)
+    if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)
     {
         SDL_Rect miceRect = SDL_Rect();
         miceRect.x = event.motion.x;
         miceRect.y = event.motion.y;
-        miceRect.w = 5;
-        miceRect.h = 5;
+        miceRect.w = 1;
+        miceRect.h = 1;
 
         SDL_Rect absoluteRect = SDL_Rect();
         absoluteRect.x = AbsolutePosition.x;
@@ -69,13 +69,23 @@ void Controls::Button::EventUpdate(SDL_Event &event)
 
         if (SDL_HasIntersection(&absoluteRect, &miceRect))
         {
-            TaiyouButtonState state = TaiyouButtonState::Idle;
-
-            if (event.type == SDL_MOUSEMOTION)
+            TaiyouButtonState state = m_CurrentState;
+            
+            if (event.type == SDL_MOUSEBUTTONDOWN)
             {
-                state = TaiyouButtonState::Hovering;
-            } else if (event.type == SDL_MOUSEBUTTONDOWN) {
                 state = TaiyouButtonState::Pressed;
+                Context.Turk->LogWarning("Controls::Button; Down");
+
+            } else if (event.type == SDL_MOUSEBUTTONUP && m_CurrentState == TaiyouButtonState::Pressed)
+            {
+                state = TaiyouButtonState::Pressed;
+                PerformClick();
+                Context.Turk->LogWarning("Controls::Button; ligma");
+
+            } else if (event.type == SDL_MOUSEMOTION && m_CurrentState == TaiyouButtonState::Idle) {
+                state = TaiyouButtonState::Hovering;
+                Context.Turk->LogWarning("Controls::Button; Hovering");
+
             }
 
             SetAnimationState(state);
@@ -90,7 +100,7 @@ void Controls::Button::SetText(const std::string& text)
     m_Text = text;
 
     // Free old text texture (if any)
-    SDL_DestroyTexture(TextTexture);
+    SDL_DestroyTexture(m_TextTexture);
 
     SDL_Color foregroundColor = SDL_Color();
     foregroundColor.a = 255;
@@ -99,21 +109,21 @@ void Controls::Button::SetText(const std::string& text)
     foregroundColor.b = 255;
 
     // Render UTF8 Blended font
-    SDL_Surface *fontSurface = TTF_RenderUTF8_Blended(Context.Turk->GetFont(Font), m_Text.c_str(), foregroundColor);
+    SDL_Surface *fontSurface = TTF_RenderUTF8_Blended(Context.Turk->GetFont(m_Font), m_Text.c_str(), foregroundColor);
 
-    TextTexture = SDL_CreateTextureFromSurface(Context.Renderer, fontSurface);
-    SDL_SetTextureBlendMode(TextTexture, SDL_BLENDMODE_BLEND);
+    m_TextTexture = SDL_CreateTextureFromSurface(Context.Renderer, fontSurface);
+    SDL_SetTextureBlendMode(m_TextTexture, SDL_BLENDMODE_BLEND);
 
     int sizeW, sizeH = 0;
-    SDL_QueryTexture(TextTexture, NULL, NULL, &sizeW, &sizeH);
+    SDL_QueryTexture(m_TextTexture, NULL, NULL, &sizeW, &sizeH);
 
-    TextTextureSize.x = sizeW;
-    TextTextureSize.y = sizeH;
+    m_TextTextureSize.x = sizeW;
+    m_TextTextureSize.y = sizeH;
 
     SDL_FreeSurface(fontSurface);
 
-    MinimumSize.x = (Padding.x * 2) + TextTextureSize.x;
-    MinimumSize.y = (Padding.y * 2) + TextTextureSize.y;
+    MinimumSize.x = (Padding.x * 2) + m_TextTextureSize.x;
+    MinimumSize.y = (Padding.y * 2) + m_TextTextureSize.y;
 }
 
 std::string Controls::Button::GetText() const
@@ -139,18 +149,19 @@ void Controls::Button::OnDraw(SDL_Renderer *renderer, double deltaTime)
     // Destination Rectangle for Text texture
     // Center Text texture inside control Size boundary
     SDL_Rect destRect = SDL_Rect();
-    destRect.x = Size.x / 2.0 - TextTextureSize.x / 2.0;
-    destRect.y = Size.y / 2.0 - TextTextureSize.y / 2.0;
-    destRect.w = TextTextureSize.x;
-    destRect.h = TextTextureSize.y;
+    destRect.x = Size.x / 2.0 - m_TextTextureSize.x / 2.0;
+    destRect.y = Size.y / 2.0 - m_TextTextureSize.y / 2.0;
+    destRect.w = m_TextTextureSize.x;
+    destRect.h = m_TextTextureSize.y;
 
     // Set foreground color
-    SDL_SetTextureColorMod(TextTexture, m_CurrentForegroundColor.r, m_CurrentForegroundColor.g, m_CurrentForegroundColor.b);
+    SDL_SetTextureColorMod(m_TextTexture, m_CurrentForegroundColor.r, m_CurrentForegroundColor.g, m_CurrentForegroundColor.b);
 
-    SDL_RenderCopy(renderer, TextTexture, NULL, &destRect);
+    // Copy text texture to renderer
+    SDL_RenderCopy(renderer, m_TextTexture, NULL, &destRect);
 }
 
-void Controls::Button::SetAnimationState(const TaiyouButtonState newState)
+void Controls::Button::SetAnimationState(const TaiyouButtonState& newState)
 {
     if (newState == m_CurrentState)
         return;
@@ -216,4 +227,15 @@ void Controls::Button::SetAnimationState(const TaiyouButtonState newState)
             break;
         }
     }
+}
+
+void Controls::Button::PerformClick()
+{
+    if (OnClick == nullptr)
+    {
+        Context.Turk->LogWarning("Controls::Button; No callback registered for OnClick");
+        return;
+    }
+
+    OnClick();
 }
