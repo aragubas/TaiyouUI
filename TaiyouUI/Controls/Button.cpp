@@ -77,7 +77,7 @@ void Controls::Button::EventUpdate(SDL_Event &event)
 
             } else if (event.type == SDL_MOUSEBUTTONUP && m_CurrentState == TaiyouButtonState::Pressed)
             {
-                state = TaiyouButtonState::Pressed;
+                state = TaiyouButtonState::Hovering;
                 PerformClick();
 
             } else if (event.type == SDL_MOUSEMOTION && m_CurrentState == TaiyouButtonState::Idle) {
