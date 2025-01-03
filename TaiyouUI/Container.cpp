@@ -45,6 +45,9 @@ void Container::BuildCenter()
 
     control->RelativePosition.x = Size.x / 2 - control->Size.x / 2;
     control->RelativePosition.y = Size.y / 2 - control->Size.y / 2;
+
+    control->AbsolutePosition.x = AbsolutePosition.x + control->RelativePosition.x;
+    control->AbsolutePosition.y = AbsolutePosition.y + control->RelativePosition.y;
 }
 
 // TODO: Implement DockFill

@@ -15,6 +15,7 @@ namespace TaiyouUI::Controls
         Idle,
         Hovering,
         Pressed,
+        Disabled
     };
 
     class Button : public Control
@@ -38,9 +39,12 @@ namespace TaiyouUI::Controls
         SDL_Color m_CurrentForegroundColor;
         SDL_Color m_TargetBackgroundColor;
         SDL_Color m_TargetForegroundColor;
-        std::string m_Text;
+        SDL_Color m_CurrentBorderColor;
+        SDL_Color m_TargetBorderColor;
+
         TaiyouButtonState m_CurrentState;
         TaiyouButtonState m_LastState;
+        std::string m_Text;
 
         void OnDraw(SDL_Renderer *renderer, double deltaTime) override;
         void SetAnimationState(const TaiyouButtonState newState);

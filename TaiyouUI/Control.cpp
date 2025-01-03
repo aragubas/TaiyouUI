@@ -1,5 +1,6 @@
 #include "Control.h"
 #include "TaiyouUI/UIRootContext.h"
+#include <SDL_rect.h>
 using namespace TaiyouUI;
 
 

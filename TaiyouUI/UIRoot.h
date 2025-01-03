@@ -11,7 +11,7 @@
 
 namespace TaiyouUI
 {
-	/// @brief Manages input flow, rendering and activation/de-activation of UI Layers
+	/// @brief Holds an instance of Turk, Manages input flow, rendering and activation/de-activation of UI Layers
 	class UIRoot
 	{
 		std::vector<Layer *> m_Layers;
