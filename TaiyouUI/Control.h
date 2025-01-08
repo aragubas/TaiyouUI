@@ -49,7 +49,7 @@ namespace TaiyouUI
         virtual void EventUpdate(SDL_Event &event) = 0;
         void Draw(SDL_Renderer *renderer, double deltaTime);
 
-    private:
+    protected:
         virtual void OnDraw(SDL_Renderer *renderer, double deltaTime) = 0;
     };
 }

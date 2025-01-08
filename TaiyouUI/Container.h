@@ -30,7 +30,7 @@ namespace TaiyouUI
         void EventUpdate(SDL_Event &event) override;
         void AddControl(Control *control);
 
-    private:
+    protected:
         void OnDraw(SDL_Renderer *renderer, double deltaTime) override;
     };
 }
