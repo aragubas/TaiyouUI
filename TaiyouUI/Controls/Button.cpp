@@ -23,6 +23,12 @@ Controls::Button::Button(const UIRootContext& context, const std::string& text, 
     m_Font = Context.Turk->GetFontDescriptor("Inter-Variable", 16);
     SetText(text);
     SetAnimationState(Idle);
+
+    // Set current colors to target colors, to avoid control being
+    // invisible in the first frame
+    m_CurrentBackgroundColor = m_TargetBackgroundColor;
+    m_CurrentForegroundColor = m_TargetForegroundColor;
+    m_CurrentBorderColor = m_TargetBorderColor;
 }
 
 Controls::Button::~Button()
@@ -189,9 +195,9 @@ void Controls::Button::SetAnimationState(const TaiyouButtonState& newState)
             m_TargetBackgroundColor.g = 241;
             m_TargetBackgroundColor.b = 215;
 
-            m_TargetForegroundColor.r = 45;
-            m_TargetForegroundColor.g = 45;
-            m_TargetForegroundColor.b = 45;
+            m_TargetForegroundColor.r = 42;
+            m_TargetForegroundColor.g = 42;
+            m_TargetForegroundColor.b = 42;
 
             m_TargetBorderColor.r = 0;
             m_TargetBorderColor.g = 120;
@@ -205,9 +211,9 @@ void Controls::Button::SetAnimationState(const TaiyouButtonState& newState)
             m_TargetBackgroundColor.g = 228;
             m_TargetBackgroundColor.b = 247;
 
-            m_TargetForegroundColor.r = 5;
-            m_TargetForegroundColor.g = 5;
-            m_TargetForegroundColor.b = 5;
+            m_TargetForegroundColor.r = 2;
+            m_TargetForegroundColor.g = 2;
+            m_TargetForegroundColor.b = 2;
             break;
         }
 
