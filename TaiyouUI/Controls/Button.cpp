@@ -7,9 +7,10 @@
 #include <SDL_render.h>
 #include <stdio.h>
 #include <math.h>
+#include <iostream>
 using namespace TaiyouUI;
 
-
+// Color Scheme
 SDL_Color Controls::Button::s_ColorBackgroundIdle = {240, 240, 240, 255};
 SDL_Color Controls::Button::s_ColorBackgroundHovering = {229, 241, 251, 255};
 SDL_Color Controls::Button::s_ColorBackgroundPressed = {204, 228, 247, 255};
@@ -34,7 +35,8 @@ Controls::Button::Button(const UIRootContext& context, const std::string& text, 
     OnClick(nullptr),
     m_CurrentBackgroundColorInterpolator(Animation::ColorInterpolator()),
     m_CurrentForegroundColorInterpolator(Animation::ColorInterpolator()),
-    m_CurrentBorderColorInterpolator(Animation::ColorInterpolator())
+    m_CurrentBorderColorInterpolator(Animation::ColorInterpolator()),
+    m_CurrentState(TaiyouButtonState::Disabled), m_LastState(TaiyouButtonState::Disabled)
 {
     Padding = SDL_FPoint();
     Padding.x = 12;
@@ -192,6 +194,7 @@ void Controls::Button::SetAnimationState(const TaiyouButtonState& newState)
     m_LastState = m_CurrentState;
     m_CurrentState = newState;
 
+    // Set start value to current value
     m_CurrentBackgroundColorInterpolator.SetStartValue(m_CurrentBackgroundColor);
     m_CurrentForegroundColorInterpolator.SetStartValue(m_CurrentForegroundColor);
     m_CurrentBorderColorInterpolator.SetStartValue(m_CurrentBorderColor);
