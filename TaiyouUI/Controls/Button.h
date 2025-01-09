@@ -22,7 +22,7 @@ namespace TaiyouUI::Controls
     class Button : public Control
     {
     public:
-        void (*OnClick) ();
+        std::function<void()> OnClick;
 
         Button(const UIRootContext& context, const std::string& text, Control* parentControl = nullptr);
         ~Button();
@@ -41,20 +41,20 @@ namespace TaiyouUI::Controls
         SDL_Point m_TextTextureSize;
         FontDescriptor m_Font;
 
-        static SDL_Color s_ColorBackgroundIdle;
-        static SDL_Color s_ColorBackgroundHovering;
-        static SDL_Color s_ColorBackgroundPressed;
-        static SDL_Color s_ColorBackgroundDisabled;
+        const static SDL_Color s_ColorBackgroundIdle;
+        const static SDL_Color s_ColorBackgroundHovering;
+        const static SDL_Color s_ColorBackgroundPressed;
+        const static SDL_Color s_ColorBackgroundDisabled;
 
-        static SDL_Color s_ColorForegroundIdle;
-        static SDL_Color s_ColorForegroundHovering;
-        static SDL_Color s_ColorForegroundPressed;
-        static SDL_Color s_ColorForegroundDisabled;
+        const static SDL_Color s_ColorForegroundIdle;
+        const static SDL_Color s_ColorForegroundHovering;
+        const static SDL_Color s_ColorForegroundPressed;
+        const static SDL_Color s_ColorForegroundDisabled;
 
-        static SDL_Color s_ColorBorderIdle;
-        static SDL_Color s_ColorBorderHovering;
-        static SDL_Color s_ColorBorderPressed;
-        static SDL_Color s_ColorBorderDisabled;
+        const static SDL_Color s_ColorBorderIdle;
+        const static SDL_Color s_ColorBorderHovering;
+        const static SDL_Color s_ColorBorderPressed;
+        const static SDL_Color s_ColorBorderDisabled;
 
         SDL_Color m_CurrentBackgroundColor;
         Animation::ColorInterpolator m_CurrentBackgroundColorInterpolator;

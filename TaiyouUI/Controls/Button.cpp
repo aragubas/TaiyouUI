@@ -11,20 +11,20 @@
 using namespace TaiyouUI;
 
 // Color Scheme
-SDL_Color Controls::Button::s_ColorBackgroundIdle = {240, 240, 240, 255};
-SDL_Color Controls::Button::s_ColorBackgroundHovering = {229, 241, 251, 255};
-SDL_Color Controls::Button::s_ColorBackgroundPressed = {204, 228, 247, 255};
-SDL_Color Controls::Button::s_ColorBackgroundDisabled = { 240, 240, 240, 255 };
+const SDL_Color Controls::Button::s_ColorBackgroundIdle = {240, 240, 240, 255};
+const SDL_Color Controls::Button::s_ColorBackgroundHovering = {229, 241, 251, 255};
+const SDL_Color Controls::Button::s_ColorBackgroundPressed = {204, 228, 247, 255};
+const SDL_Color Controls::Button::s_ColorBackgroundDisabled = { 240, 240, 240, 255 };
 
-SDL_Color Controls::Button::s_ColorForegroundIdle = {0, 0, 0, 255};
-SDL_Color Controls::Button::s_ColorForegroundHovering = {0, 0, 0, 255};
-SDL_Color Controls::Button::s_ColorForegroundPressed = {0, 0, 0, 255};
-SDL_Color Controls::Button::s_ColorForegroundDisabled = { 120, 120, 120, 255 };
+const SDL_Color Controls::Button::s_ColorForegroundIdle = {0, 0, 0, 255};
+const SDL_Color Controls::Button::s_ColorForegroundHovering = {0, 0, 0, 255};
+const SDL_Color Controls::Button::s_ColorForegroundPressed = {0, 0, 0, 255};
+const SDL_Color Controls::Button::s_ColorForegroundDisabled = { 120, 120, 120, 255 };
 
-SDL_Color Controls::Button::s_ColorBorderIdle = {200, 200, 200, 255};
-SDL_Color Controls::Button::s_ColorBorderHovering = {173, 216, 230, 255};
-SDL_Color Controls::Button::s_ColorBorderPressed = {153, 186, 202, 255};
-SDL_Color Controls::Button::s_ColorBorderDisabled = { 200, 200, 200, 255 };
+const SDL_Color Controls::Button::s_ColorBorderIdle = {200, 200, 200, 255};
+const SDL_Color Controls::Button::s_ColorBorderHovering = {173, 216, 230, 255};
+const SDL_Color Controls::Button::s_ColorBorderPressed = {153, 186, 202, 255};
+const SDL_Color Controls::Button::s_ColorBorderDisabled = { 200, 200, 200, 255 };
 
 
 Controls::Button::Button(const UIRootContext& context, const std::string& text, Control* parentControl) :
@@ -32,7 +32,7 @@ Controls::Button::Button(const UIRootContext& context, const std::string& text, 
     m_Text(std::string()), m_TextTexture(nullptr),
     m_TextTextureSize(SDL_Point()), m_CurrentBackgroundColor(s_ColorBackgroundIdle),
     m_CurrentForegroundColor(s_ColorForegroundIdle), m_CurrentBorderColor(s_ColorBorderIdle),
-    OnClick(nullptr),
+    OnClick(std::function<void()>()),
     m_CurrentBackgroundColorInterpolator(Animation::ColorInterpolator()),
     m_CurrentForegroundColorInterpolator(Animation::ColorInterpolator()),
     m_CurrentBorderColorInterpolator(Animation::ColorInterpolator()),
@@ -241,7 +241,7 @@ void Controls::Button::SetAnimationState(const TaiyouButtonState& newState)
 
 void Controls::Button::PerformClick()
 {
-    if (OnClick == nullptr)
+    if (!OnClick)
     {
         Context.Turk->LogWarning("Controls::Button; No callback registered for OnClick");
         return;
