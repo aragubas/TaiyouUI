@@ -1,4 +1,5 @@
 #include "Button.h"
+#include "TaiyouUI/Animation/ColorInterpolator.h"
 #include "TaiyouUI/Control.h"
 #include <SDL_events.h>
 #include <SDL_pixels.h>
@@ -9,26 +10,56 @@
 using namespace TaiyouUI;
 
 
+SDL_Color Controls::Button::s_ColorBackgroundIdle = {240, 240, 240, 255};
+SDL_Color Controls::Button::s_ColorBackgroundHovering = {229, 241, 251, 255};
+SDL_Color Controls::Button::s_ColorBackgroundPressed = {204, 228, 247, 255};
+SDL_Color Controls::Button::s_ColorBackgroundDisabled = { 240, 240, 240, 255 };
+
+SDL_Color Controls::Button::s_ColorForegroundIdle = {0, 0, 0, 255};
+SDL_Color Controls::Button::s_ColorForegroundHovering = {0, 0, 0, 255};
+SDL_Color Controls::Button::s_ColorForegroundPressed = {0, 0, 0, 255};
+SDL_Color Controls::Button::s_ColorForegroundDisabled = { 120, 120, 120, 255 };
+
+SDL_Color Controls::Button::s_ColorBorderIdle = {200, 200, 200, 255};
+SDL_Color Controls::Button::s_ColorBorderHovering = {173, 216, 230, 255};
+SDL_Color Controls::Button::s_ColorBorderPressed = {153, 186, 202, 255};
+SDL_Color Controls::Button::s_ColorBorderDisabled = { 200, 200, 200, 255 };
+
+
 Controls::Button::Button(const UIRootContext& context, const std::string& text, Control* parentControl) :
     Control(context, parentControl), // Base Constructor
     m_Text(std::string()), m_TextTexture(nullptr),
-    m_TextTextureSize(SDL_Point()), m_CurrentBackgroundColor(SDL_Color()),
-    m_TargetBackgroundColor(SDL_Color()), m_CurrentForegroundColor(SDL_Color()),
-    m_TargetForegroundColor(SDL_Color()), OnClick(nullptr)
+    m_TextTextureSize(SDL_Point()), m_CurrentBackgroundColor(s_ColorBackgroundIdle),
+    m_CurrentForegroundColor(s_ColorForegroundIdle), m_CurrentBorderColor(s_ColorBorderIdle),
+    OnClick(nullptr),
+    m_CurrentBackgroundColorInterpolator(Animation::ColorInterpolator()),
+    m_CurrentForegroundColorInterpolator(Animation::ColorInterpolator()),
+    m_CurrentBorderColorInterpolator(Animation::ColorInterpolator())
 {
     Padding = SDL_FPoint();
     Padding.x = 12;
     Padding.y = 4;
     
+    m_CurrentBackgroundColorInterpolator.SetDuration(0.25);
+    m_CurrentForegroundColorInterpolator.SetDuration(0.25);
+    m_CurrentBorderColorInterpolator.SetDuration(0.25);
+
+    m_CurrentBackgroundColorInterpolator.OnValueChanged = [this](SDL_Color color) {
+        m_CurrentBackgroundColor = color;
+    };
+
+    m_CurrentForegroundColorInterpolator.OnValueChanged = [this](SDL_Color color) {
+        m_CurrentForegroundColor = color;
+    };
+
+    m_CurrentBorderColorInterpolator.OnValueChanged = [this](SDL_Color color) {
+        m_CurrentBorderColor = color;
+    };
+
     m_Font = Context.Turk->GetFontDescriptor("Inter-Variable", 16);
     SetText(text);
-    SetAnimationState(Idle);
 
-    // Set current colors to target colors, to avoid control being
-    // invisible in the first frame
-    m_CurrentBackgroundColor = m_TargetBackgroundColor;
-    m_CurrentForegroundColor = m_TargetForegroundColor;
-    m_CurrentBorderColor = m_TargetBorderColor;
+    SetAnimationState(Idle);
 }
 
 Controls::Button::~Button()
@@ -38,19 +69,9 @@ Controls::Button::~Button()
 
 void Controls::Button::Update(double deltaTime)
 {
-    // Credit for Delta Time function
-    // https://www.construct.net/en/blogs/ashleys-blog-2/using-lerp-delta-time-924
-    // a = lerp(a, b, 1 - f ^ dt)
-    // TODO: Make a function that interpolates between values based on time (t) factor
-    float timeFunc = 1 - (pow(0.005, deltaTime));
-
-    m_CurrentBackgroundColor.r = lerp(m_CurrentBackgroundColor.r, m_TargetBackgroundColor.r, timeFunc);
-    m_CurrentBackgroundColor.g = lerp(m_CurrentBackgroundColor.g, m_TargetBackgroundColor.g, timeFunc);
-    m_CurrentBackgroundColor.b = lerp(m_CurrentBackgroundColor.b, m_TargetBackgroundColor.b, timeFunc);
-
-    m_CurrentBorderColor.r = lerp(m_CurrentBorderColor.r, m_TargetBorderColor.r, timeFunc);
-    m_CurrentBorderColor.g = lerp(m_CurrentBorderColor.g, m_TargetBorderColor.g, timeFunc);
-    m_CurrentBorderColor.b = lerp(m_CurrentBorderColor.b, m_TargetBorderColor.b, timeFunc);
+    m_CurrentBackgroundColorInterpolator.Update(deltaTime);
+    m_CurrentForegroundColorInterpolator.Update(deltaTime);
+    m_CurrentBorderColorInterpolator.Update(deltaTime);
 }
 
 void Controls::Button::EventUpdate(SDL_Event &event)
@@ -105,10 +126,10 @@ void Controls::Button::SetText(const std::string& text)
     SDL_DestroyTexture(m_TextTexture);
 
     SDL_Color foregroundColor = SDL_Color();
-    foregroundColor.a = 255;
     foregroundColor.r = 255;
     foregroundColor.g = 255;
     foregroundColor.b = 255;
+    foregroundColor.a = 255;
 
     // Render UTF8 Blended font
     SDL_Surface *fontSurface = TTF_RenderUTF8_Blended(Context.Turk->GetFont(m_Font), m_Text.c_str(), foregroundColor);
@@ -171,64 +192,48 @@ void Controls::Button::SetAnimationState(const TaiyouButtonState& newState)
     m_LastState = m_CurrentState;
     m_CurrentState = newState;
 
+    m_CurrentBackgroundColorInterpolator.SetStartValue(m_CurrentBackgroundColor);
+    m_CurrentForegroundColorInterpolator.SetStartValue(m_CurrentForegroundColor);
+    m_CurrentBorderColorInterpolator.SetStartValue(m_CurrentBorderColor);
+
     switch (newState)
     {
         case Controls::TaiyouButtonState::Idle : 
         {
-            m_TargetBackgroundColor.r = 225;
-            m_TargetBackgroundColor.g = 225;
-            m_TargetBackgroundColor.b = 225;
-
-            m_TargetForegroundColor.r = 50;
-            m_TargetForegroundColor.g = 50;
-            m_TargetForegroundColor.b = 50;
-
-            m_TargetBorderColor.r = 173;
-            m_TargetBorderColor.g = 173;
-            m_TargetBorderColor.b = 173;
+            m_CurrentBackgroundColorInterpolator.SetTargetValue(s_ColorBackgroundIdle);
+            m_CurrentForegroundColorInterpolator.SetTargetValue(s_ColorForegroundIdle);
+            m_CurrentBorderColorInterpolator.SetTargetValue(s_ColorBorderIdle);
             break;
         }
 
         case Controls::TaiyouButtonState::Hovering : 
         {
-            m_TargetBackgroundColor.r = 229;
-            m_TargetBackgroundColor.g = 241;
-            m_TargetBackgroundColor.b = 215;
-
-            m_TargetForegroundColor.r = 42;
-            m_TargetForegroundColor.g = 42;
-            m_TargetForegroundColor.b = 42;
-
-            m_TargetBorderColor.r = 0;
-            m_TargetBorderColor.g = 120;
-            m_TargetBorderColor.b = 215;
+            m_CurrentBackgroundColorInterpolator.SetTargetValue(s_ColorBackgroundHovering);
+            m_CurrentForegroundColorInterpolator.SetTargetValue(s_ColorForegroundHovering);
+            m_CurrentBorderColorInterpolator.SetTargetValue(s_ColorBorderHovering);
             break;
         }
 
         case Controls::TaiyouButtonState::Pressed : 
         {
-            m_TargetBackgroundColor.r = 204;
-            m_TargetBackgroundColor.g = 228;
-            m_TargetBackgroundColor.b = 247;
-
-            m_TargetForegroundColor.r = 2;
-            m_TargetForegroundColor.g = 2;
-            m_TargetForegroundColor.b = 2;
+            m_CurrentBackgroundColorInterpolator.SetTargetValue(s_ColorBackgroundPressed);
+            m_CurrentForegroundColorInterpolator.SetTargetValue(s_ColorForegroundPressed);
+            m_CurrentBorderColorInterpolator.SetTargetValue(s_ColorBorderPressed);
             break;
         }
 
         case Controls::TaiyouButtonState::Disabled : 
         {
-            m_TargetBackgroundColor.r = 204;
-            m_TargetBackgroundColor.g = 204;
-            m_TargetBackgroundColor.b = 204;
-
-            m_TargetForegroundColor.r = 135;
-            m_TargetForegroundColor.g = 135;
-            m_TargetForegroundColor.b = 135;
+            m_CurrentBackgroundColorInterpolator.SetTargetValue(s_ColorBackgroundDisabled);
+            m_CurrentForegroundColorInterpolator.SetTargetValue(s_ColorForegroundDisabled);
+            m_CurrentBorderColorInterpolator.SetTargetValue(s_ColorBorderDisabled);
             break;
         }
     }
+
+    m_CurrentBackgroundColorInterpolator.Restart();
+    m_CurrentForegroundColorInterpolator.Restart();
+    m_CurrentBorderColorInterpolator.Restart();
 }
 
 void Controls::Button::PerformClick()

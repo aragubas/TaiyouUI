@@ -11,7 +11,6 @@ Interpolator::Interpolator() :
     
 }
 
-
 void Interpolator::Update(double deltaTime)
 {
     if (Stopped)
@@ -28,6 +27,7 @@ void Interpolator::Update(double deltaTime)
     {
         m_Time = 1.0f;
         Stopped = true;
+        m_CurrentValue = TargetValue;
 
         if (OnEnded)
             OnEnded();

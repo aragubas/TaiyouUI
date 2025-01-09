@@ -20,6 +20,7 @@ add_library(TaiyouUI STATIC
   "TaiyouUI/Layer.h" "TaiyouUI/Layer.cpp" "TaiyouUI/Controls/Button.h" "TaiyouUI/Controls/Button.cpp" "TaiyouUI/UIRootContext.h"
   "TaiyouUI/Turk/Turk.h" "TaiyouUI/Turk/Turk.cpp" "TaiyouUI/Turk/FontDescriptor.h" "TaiyouUI/Turk/FontDescriptor.cpp"  "TaiyouUI/Turk/FontDescriptorHasher.h"
   "TaiyouUI/Animation/Interpolator.cpp" "TaiyouUI/Animation/Interpolator.h" "TaiyouUI/Animation/InterpolatorEasingFunction.h"
+  "TaiyouUI/Animation/ColorInterpolator.cpp" "TaiyouUI/Animation/ColorInterpolator.h"
  )
 
 # Set C++ standard to 20

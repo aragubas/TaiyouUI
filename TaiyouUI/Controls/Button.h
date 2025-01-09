@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include "../Control.h"
 #include "../UIRootContext.h"
+#include "TaiyouUI/Animation/ColorInterpolator.h"
 #include <TaiyouUI/Turk/FontDescriptor.h>
 using namespace TaiyouUI::Turk;
 
@@ -32,23 +33,40 @@ namespace TaiyouUI::Controls
         void SetText(const std::string& Text);
         std::string GetText() const;
 
+    protected:
+        void OnDraw(SDL_Renderer *renderer, double deltaTime) override;
+
     private:
         SDL_Texture *m_TextTexture;
         SDL_Point m_TextTextureSize;
         FontDescriptor m_Font;
 
+        static SDL_Color s_ColorBackgroundIdle;
+        static SDL_Color s_ColorBackgroundHovering;
+        static SDL_Color s_ColorBackgroundPressed;
+        static SDL_Color s_ColorBackgroundDisabled;
+
+        static SDL_Color s_ColorForegroundIdle;
+        static SDL_Color s_ColorForegroundHovering;
+        static SDL_Color s_ColorForegroundPressed;
+        static SDL_Color s_ColorForegroundDisabled;
+
+        static SDL_Color s_ColorBorderIdle;
+        static SDL_Color s_ColorBorderHovering;
+        static SDL_Color s_ColorBorderPressed;
+        static SDL_Color s_ColorBorderDisabled;
+
         SDL_Color m_CurrentBackgroundColor;
+        Animation::ColorInterpolator m_CurrentBackgroundColorInterpolator;
         SDL_Color m_CurrentForegroundColor;
-        SDL_Color m_TargetBackgroundColor;
-        SDL_Color m_TargetForegroundColor;
+        Animation::ColorInterpolator m_CurrentForegroundColorInterpolator;
         SDL_Color m_CurrentBorderColor;
-        SDL_Color m_TargetBorderColor;
+        Animation::ColorInterpolator m_CurrentBorderColorInterpolator;
 
         TaiyouButtonState m_CurrentState;
         TaiyouButtonState m_LastState;
         std::string m_Text;
 
-        void OnDraw(SDL_Renderer *renderer, double deltaTime) override;
         void SetAnimationState(const TaiyouButtonState& newState);
         void PerformClick();
     };
