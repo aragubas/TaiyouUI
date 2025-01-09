@@ -44,6 +44,7 @@ namespace TaiyouUI
         ControlVisibility Visibility;
 
         Control(const UIRootContext& context, Control* parentControl = nullptr);
+        virtual ~Control() = default;
 
         virtual void Update(double deltaTime) = 0;
         virtual void EventUpdate(SDL_Event &event) = 0;

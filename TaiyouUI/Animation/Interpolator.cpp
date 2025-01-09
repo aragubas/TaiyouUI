@@ -3,10 +3,11 @@
 using namespace TaiyouUI::Animation;
 
 Interpolator::Interpolator() :
-    Duration(1), m_CurrentValue(0),
+    m_CurrentValue(0), m_ElapsedTime(0),
+    m_Time(0), Duration(1),
     StartValue(0), TargetValue(0),
-    m_ElapsedTime(0), m_Time(0),
-    Stopped(false), EasingFunction(InterpolatorEasingFunction::SmoothEaseInOut)
+    Stopped(false), 
+    EasingFunction(InterpolatorEasingFunction::SmoothEaseInOut)
 {
     
 }

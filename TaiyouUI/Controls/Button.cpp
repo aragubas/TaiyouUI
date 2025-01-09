@@ -29,14 +29,16 @@ const SDL_Color Controls::Button::s_ColorBorderDisabled = { 200, 200, 200, 255 }
 
 Controls::Button::Button(const UIRootContext& context, const std::string& text, Control* parentControl) :
     Control(context, parentControl), // Base Constructor
-    m_Text(std::string()), m_TextTexture(nullptr),
-    m_TextTextureSize(SDL_Point()), m_CurrentBackgroundColor(s_ColorBackgroundIdle),
-    m_CurrentForegroundColor(s_ColorForegroundIdle), m_CurrentBorderColor(s_ColorBorderIdle),
-    OnClick(std::function<void()>()),
+    OnClick(std::function<void()>()), m_TextTexture(nullptr), m_TextTextureSize(SDL_Point()),
+    m_Font(FontDescriptor()),
+    m_CurrentBackgroundColor(s_ColorBackgroundIdle),
     m_CurrentBackgroundColorInterpolator(Animation::ColorInterpolator()),
+    m_CurrentForegroundColor(s_ColorForegroundIdle), 
     m_CurrentForegroundColorInterpolator(Animation::ColorInterpolator()),
+    m_CurrentBorderColor(s_ColorBorderIdle),
     m_CurrentBorderColorInterpolator(Animation::ColorInterpolator()),
-    m_CurrentState(TaiyouButtonState::Disabled), m_LastState(TaiyouButtonState::Disabled)
+    m_CurrentState(TaiyouButtonState::Disabled), m_LastState(TaiyouButtonState::Disabled),
+    m_Text(std::string())
 {
     Padding = SDL_FPoint();
     Padding.x = 12;

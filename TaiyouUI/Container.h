@@ -25,6 +25,7 @@ namespace TaiyouUI
         ContainerType Type;
         
         Container(const UIRootContext& context, ContainerType type = ContainerType::Center, Control* parentControl = nullptr);
+        ~Container();
 
         void Update(double deltaTime) override;
         void EventUpdate(SDL_Event &event) override;

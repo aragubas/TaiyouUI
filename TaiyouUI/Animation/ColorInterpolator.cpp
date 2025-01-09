@@ -5,7 +5,7 @@ using namespace TaiyouUI::Animation;
 ColorInterpolator::ColorInterpolator() :
     m_rInterpolator(Interpolator()), m_gInterpolator(Interpolator()),
     m_bInterpolator(Interpolator()), m_aInterpolator(Interpolator()),
-    m_AnyValueChanged(false), m_CurrentColor({255, 0, 0, 255}),
+    m_CurrentColor({255, 0, 0, 255}), m_AnyValueChanged(false),
     m_InterpolatorsFinished(0)
 {
     m_CurrentColor.a = 255;

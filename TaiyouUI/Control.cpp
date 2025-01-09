@@ -8,8 +8,8 @@ Control::Control(const UIRootContext& context, Control* parentControl) :
     Context(context), ParentControl(parentControl), 
     RelativePosition(SDL_FPoint(0, 0)), AbsolutePosition(SDL_FPoint(0, 0)), 
     MinimumSize(SDL_FPoint(0, 0)), MaximumSize(SDL_FPoint(0, 0)), 
-    Size(SDL_FPoint(0, 0)), Visibility(ControlVisibility::VisibleEnabled),
-    Padding(SDL_FPoint(0, 0))
+    Padding(SDL_FPoint(0, 0)), Size(SDL_FPoint(0, 0)), 
+    Visibility(ControlVisibility::VisibleEnabled)
 {
     // TODO: Add initialization logic for controls
 }

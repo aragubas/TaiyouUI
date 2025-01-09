@@ -4,10 +4,16 @@ using namespace TaiyouUI;
 
 
 Container::Container(const UIRootContext& context, ContainerType type, Control* parentControl) : 
-    Control(context, parentControl), Type(type),
-    Controls(std::vector<Control *>())
+    Control(context, parentControl), 
+    Controls(std::vector<Control *>()),
+    Type(type)
 {
     
+}
+
+Container::~Container()
+{
+
 }
 
 void Container::BuildUI()
