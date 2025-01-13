@@ -80,8 +80,10 @@ TTF_Font* Turk::Turk::m_LoadFont(const std::string &fontName, int fontSize)
 		throw std::runtime_error(error);
 	}
 
+#ifndef NDEBUG
 	fmt::printf("[Debug] Turk::m_LoadFont new font loaded: name: \"%s\" size: \"%i\"\n", fontDescriptor.Name, fontDescriptor.Size);
-	
+#endif
+
 	m_Fonts[fontDescriptor] = newFont;
 
 	return newFont;
