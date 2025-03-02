@@ -1,8 +1,8 @@
 #pragma once
 #include "Interpolator.h"
-#include "SDL_pixels.h"
 #include "TaiyouUI/Animation/InterpolatorEasingFunction.h"
-#include <SDL_stdinc.h>
+#include <SDL3/SDL_pixels.h>
+#include <SDL3/SDL_stdinc.h>
 
 namespace TaiyouUI::Animation
 {

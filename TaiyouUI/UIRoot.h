@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
-#include <SDL2/SDL.h>
+#include <memory>
+#include <SDL3/SDL.h>
 #include "Layer.h"
 #include "Container.h"
 #include "UIRootContext.h"
@@ -9,7 +10,7 @@
 
 namespace TaiyouUI
 {
-	/// @brief Holds an instance of Turk, Manages input flow, rendering and activation/de-activation of UI Layers
+	/// @brief The backbone of the entire GUI tree, manages every instance attached to it
 	class UIRoot
 	{
 		std::vector<Layer> m_Layers;
@@ -17,9 +18,9 @@ namespace TaiyouUI
 	public:
 		SDL_Point Size;
 		UIRootContext Context;
-		Turk::Turk Turk;
+		std::shared_ptr<TurkInstance> Turk;
 
-		UIRoot(SDL_Renderer *renderer, SDL_Window *window);
+		UIRoot(std::shared_ptr<SDL_Renderer> renderer, std::shared_ptr<SDL_Window> window);
 
 		/// @brief Adds the layer into the internal layer stack and returns the layer pointer
 		/// @param container Container pointer

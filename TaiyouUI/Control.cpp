@@ -1,6 +1,6 @@
 #include "Control.h"
 #include "TaiyouUI/UIRootContext.h"
-#include <SDL_rect.h>
+#include <SDL3/SDL_rect.h>
 using namespace TaiyouUI;
 
 
@@ -20,7 +20,7 @@ void Control::Draw(SDL_Renderer *renderer, double deltaTime)
     if (Visibility == ControlVisibility::Invisible) return;
 
     SDL_Rect oldViewport = SDL_Rect();
-    SDL_RenderGetViewport(renderer, &oldViewport);
+    SDL_GetRenderViewport(renderer, &oldViewport);
     
 
     // Set up new viewport
@@ -29,9 +29,9 @@ void Control::Draw(SDL_Renderer *renderer, double deltaTime)
     newViewport.y = RelativePosition.y;
     newViewport.w = Size.x;
     newViewport.h = Size.y;
-    SDL_RenderSetViewport(renderer, &newViewport);
+    SDL_SetRenderViewport(renderer, &newViewport);
 
     OnDraw(renderer, deltaTime);
 
-    SDL_RenderSetViewport(renderer, &oldViewport);
+    SDL_SetRenderViewport(renderer, &oldViewport);
 }

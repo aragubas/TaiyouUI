@@ -1,10 +1,10 @@
 #include "Button.h"
 #include "TaiyouUI/Animation/ColorInterpolator.h"
 #include "TaiyouUI/Control.h"
-#include <SDL_events.h>
-#include <SDL_pixels.h>
-#include <SDL_rect.h>
-#include <SDL_render.h>
+#include <SDL3/SDL_events.h>
+#include <SDL3/SDL_pixels.h>
+#include <SDL3/SDL_rect.h>
+#include <SDL3/SDL_render.h>
 #include <stdio.h>
 #include <math.h>
 #include <iostream>
@@ -84,7 +84,7 @@ void Controls::Button::EventUpdate(SDL_Event &event)
     if (Visibility == ControlVisibility::VisibleDisabled) 
         return;
 
-    if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP)
+    if (event.type == SDL_EVENT_MOUSE_MOTION || event.type == SDL_EVENT_MOUSE_BUTTON_DOWN || event.type == SDL_EVENT_MOUSE_BUTTON_UP)
     {
         SDL_Rect miceRect = SDL_Rect();
         miceRect.x = event.motion.x;
@@ -98,20 +98,20 @@ void Controls::Button::EventUpdate(SDL_Event &event)
         absoluteRect.w = Size.x;
         absoluteRect.h = Size.y;
 
-        if (SDL_HasIntersection(&absoluteRect, &miceRect))
+        if (SDL_HasRectIntersection(&absoluteRect, &miceRect))
         {
             TaiyouButtonState state = m_CurrentState;
             
-            if (event.type == SDL_MOUSEBUTTONDOWN)
+            if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
             {
                 state = TaiyouButtonState::Pressed;
 
-            } else if (event.type == SDL_MOUSEBUTTONUP && m_CurrentState == TaiyouButtonState::Pressed)
+            } else if (event.type == SDL_EVENT_MOUSE_BUTTON_UP && m_CurrentState == TaiyouButtonState::Pressed)
             {
                 state = TaiyouButtonState::Hovering;
                 PerformClick();
 
-            } else if (event.type == SDL_MOUSEMOTION && m_CurrentState == TaiyouButtonState::Idle) {
+            } else if (event.type == SDL_EVENT_MOUSE_MOTION && m_CurrentState == TaiyouButtonState::Idle) {
                 state = TaiyouButtonState::Hovering;
             }
 
@@ -136,18 +136,18 @@ void Controls::Button::SetText(const std::string& text)
     foregroundColor.a = 255;
 
     // Render UTF8 Blended font
-    SDL_Surface *fontSurface = TTF_RenderUTF8_Blended(Context.Turk->GetFont(m_Font), m_Text.c_str(), foregroundColor);
+    SDL_Surface *fontSurface = TTF_RenderText_Blended(Context.Turk->GetFont(m_Font), m_Text.c_str(), m_Text.size(), foregroundColor);
 
-    m_TextTexture = SDL_CreateTextureFromSurface(Context.Renderer, fontSurface);
+    m_TextTexture = SDL_CreateTextureFromSurface(Context.Renderer.get(), fontSurface);
     SDL_SetTextureBlendMode(m_TextTexture, SDL_BLENDMODE_BLEND);
 
-    int sizeW, sizeH = 0;
-    SDL_QueryTexture(m_TextTexture, NULL, NULL, &sizeW, &sizeH);
+    float sizeW, sizeH = 0;
+    SDL_GetTextureSize(m_TextTexture, &sizeW, &sizeH);
 
     m_TextTextureSize.x = sizeW;
     m_TextTextureSize.y = sizeH;
 
-    SDL_FreeSurface(fontSurface);
+    SDL_DestroySurface(fontSurface);
 
     MinimumSize.x = (Padding.x * 2) + m_TextTextureSize.x;
     MinimumSize.y = (Padding.y * 2) + m_TextTextureSize.y;
@@ -162,7 +162,7 @@ void Controls::Button::OnDraw(SDL_Renderer *renderer, double deltaTime)
 {
     // Draw background rectangle
     SDL_SetRenderDrawColor(renderer, m_CurrentBackgroundColor.r, m_CurrentBackgroundColor.g, m_CurrentBackgroundColor.b, m_CurrentBackgroundColor.a);
-    SDL_Rect size = SDL_Rect();
+    SDL_FRect size = SDL_FRect();
     size.x = 0;
     size.y = 0;
     size.w = Size.x;
@@ -171,11 +171,11 @@ void Controls::Button::OnDraw(SDL_Renderer *renderer, double deltaTime)
 
     // Draw background border
     SDL_SetRenderDrawColor(renderer, m_CurrentBorderColor.r, m_CurrentBorderColor.g, m_CurrentBorderColor.b, m_CurrentBorderColor.a);
-    SDL_RenderDrawRect(renderer, &size);
+    SDL_RenderRect(renderer, &size);
 
     // Destination Rectangle for Text texture
     // Center Text texture inside control Size boundary
-    SDL_Rect destRect = SDL_Rect();
+    SDL_FRect destRect = SDL_FRect();
     destRect.x = Size.x / 2.0 - m_TextTextureSize.x / 2.0;
     destRect.y = Size.y / 2.0 - m_TextTextureSize.y / 2.0;
     destRect.w = m_TextTextureSize.x;
@@ -185,7 +185,7 @@ void Controls::Button::OnDraw(SDL_Renderer *renderer, double deltaTime)
     SDL_SetTextureColorMod(m_TextTexture, m_CurrentForegroundColor.r, m_CurrentForegroundColor.g, m_CurrentForegroundColor.b);
 
     // Copy text texture to renderer
-    SDL_RenderCopy(renderer, m_TextTexture, NULL, &destRect);
+    SDL_RenderTexture(renderer, m_TextTexture, NULL, &destRect);
 }
 
 void Controls::Button::SetAnimationState(const TaiyouButtonState& newState)

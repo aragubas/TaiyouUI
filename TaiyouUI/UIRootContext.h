@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 #include "Turk/Turk.h"
 
 
@@ -7,8 +7,8 @@ namespace TaiyouUI
 {
     struct UIRootContext
     {
-        SDL_Renderer *Renderer;
-        SDL_Window *Window;
-        Turk::Turk *Turk;
+        std::shared_ptr<SDL_Renderer> Renderer;
+        std::shared_ptr<SDL_Window> Window;
+        std::shared_ptr<TurkInstance> Turk;
     };
 }

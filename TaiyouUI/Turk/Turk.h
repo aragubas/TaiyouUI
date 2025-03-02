@@ -1,21 +1,22 @@
 #pragma once
 #include <unordered_map>
-#include <SDL2/SDL_ttf.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include "FontDescriptor.h"
 #include "FontDescriptorHasher.h"
 #include <string>
+#include <memory>
+using namespace TaiyouUI::Turk;
 
-
-namespace TaiyouUI::Turk
+namespace TaiyouUI
 {
 	/// <summary>
 	/// TaiyouUI Resource Keeper
 	/// </summary>
-	class Turk
+	class TurkInstance
 	{
 	public:
-		Turk(SDL_Renderer* renderer, SDL_Window* window);
-		~Turk();
+		TurkInstance(std::shared_ptr<SDL_Renderer> renderer, std::shared_ptr<SDL_Window> window);
+		~TurkInstance();
 
 		/// <summary>
 		/// Creates the font resource (if necessary) and returns the descriptor
@@ -35,8 +36,8 @@ namespace TaiyouUI::Turk
 		void LogWarning(const std::string& message);
 
 	private:
-		SDL_Renderer* m_Renderer;
-		SDL_Window* m_Window;
+		std::shared_ptr<SDL_Renderer> m_Renderer;
+		std::shared_ptr<SDL_Window> m_Window;
 
 		std::unordered_map<FontDescriptor, TTF_Font*, FontDescriptorHasher> m_Fonts;
 

@@ -3,11 +3,12 @@
 #include <filesystem>
 #include <iostream>
 #include <fmt/printf.h>
-using namespace TaiyouUI::Turk;
+using namespace TaiyouUI;
 
-
-Turk::Turk(SDL_Renderer* renderer, SDL_Window* window) :
-	m_Renderer(renderer), m_Window(window)
+TurkInstance::TurkInstance(std::shared_ptr<SDL_Renderer> renderer, std::shared_ptr<SDL_Window> window) :
+	m_Renderer(renderer), 
+	m_Window(window),
+	m_Fonts(std::unordered_map<FontDescriptor, TTF_Font*, FontDescriptorHasher>())
 {
 	// Reserve 4 spots for fonts
 	m_Fonts.reserve(4);
@@ -20,7 +21,7 @@ Turk::Turk(SDL_Renderer* renderer, SDL_Window* window) :
 	}
 }
 
-Turk::Turk::~Turk()
+TurkInstance::~TurkInstance()
 {
 	std::cout << "Turk::~Turk() Releasing all resources" << std::endl;
 	// Release all font resources
@@ -30,7 +31,7 @@ Turk::Turk::~Turk()
 	}
 }
 
-FontDescriptor TaiyouUI::Turk::Turk::GetFontDescriptor(std::string fontName, int fontSize)
+FontDescriptor TurkInstance::GetFontDescriptor(std::string fontName, int fontSize)
 {
 	FontDescriptor descriptor;
 	descriptor.Name = NormalizeFontName(fontName);
@@ -45,7 +46,7 @@ FontDescriptor TaiyouUI::Turk::Turk::GetFontDescriptor(std::string fontName, int
 	return descriptor;
 }
 
-TTF_Font* Turk::GetFont(FontDescriptor fontDescriptor)
+TTF_Font* TurkInstance::GetFont(FontDescriptor fontDescriptor)
 {
 	// Check if font exists in cache
 	if (m_Fonts.contains(fontDescriptor))
@@ -54,7 +55,7 @@ TTF_Font* Turk::GetFont(FontDescriptor fontDescriptor)
 	return m_LoadFont(fontDescriptor.Name, fontDescriptor.Size);
 }
 
-TTF_Font* Turk::Turk::m_LoadFont(const std::string &fontName, int fontSize)
+TTF_Font* TurkInstance::m_LoadFont(const std::string &fontName, int fontSize)
 {
 	std::string name = NormalizeFontName(fontName);
 
@@ -73,7 +74,7 @@ TTF_Font* Turk::Turk::m_LoadFont(const std::string &fontName, int fontSize)
 
 	if (newFont == nullptr)
 	{
-		const char* error = TTF_GetError();
+		const char* error = SDL_GetError();
 
 		std::cout << error << std::endl;
 
@@ -89,7 +90,7 @@ TTF_Font* Turk::Turk::m_LoadFont(const std::string &fontName, int fontSize)
 	return newFont;
 }
 
-std::string Turk::Turk::NormalizeFontName(std::string fontName)
+std::string TurkInstance::NormalizeFontName(std::string fontName)
 {
 	if (fontName.ends_with(".ttf"))
 	{
@@ -101,7 +102,7 @@ std::string Turk::Turk::NormalizeFontName(std::string fontName)
 	return fontName;
 }
 
-void Turk::Turk::LogWarning(const std::string& message)
+void TurkInstance::LogWarning(const std::string& message)
 {
 	fmt::printf("[Turk::LogWarning] %s\n", message);
 }
