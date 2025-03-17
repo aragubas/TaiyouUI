@@ -161,7 +161,7 @@ std::string Controls::Button::GetText() const
 void Controls::Button::OnDraw(SDL_Renderer *renderer, double deltaTime)
 {
     // Draw background rectangle
-    SDL_SetRenderDrawColor(renderer, m_CurrentBackgroundColor.r, m_CurrentBackgroundColor.g, m_CurrentBackgroundColor.b, m_CurrentBackgroundColor.a);
+    SDL_SetRenderDrawColor(renderer, m_CurrentBorderColor.r, m_CurrentBorderColor.g, m_CurrentBorderColor.b, m_CurrentBorderColor.a);
     SDL_FRect size = SDL_FRect();
     size.x = 0;
     size.y = 0;
@@ -170,8 +170,12 @@ void Controls::Button::OnDraw(SDL_Renderer *renderer, double deltaTime)
     SDL_RenderFillRect(renderer, &size);
 
     // Draw background border
-    SDL_SetRenderDrawColor(renderer, m_CurrentBorderColor.r, m_CurrentBorderColor.g, m_CurrentBorderColor.b, m_CurrentBorderColor.a);
-    SDL_RenderRect(renderer, &size);
+    SDL_SetRenderDrawColor(renderer, m_CurrentBackgroundColor.r, m_CurrentBackgroundColor.g, m_CurrentBackgroundColor.b, m_CurrentBackgroundColor.a);
+    size.x = 2;
+    size.y = 2;
+    size.w = Size.x - 4;
+    size.h = Size.y - 4;
+    SDL_RenderFillRect(renderer, &size);
 
     // Destination Rectangle for Text texture
     // Center Text texture inside control Size boundary
