@@ -11,20 +11,20 @@
 using namespace TaiyouUI;
 
 // Color Scheme
-const SDL_Color Controls::Button::s_ColorBackgroundIdle = {240, 240, 240, 255};
-const SDL_Color Controls::Button::s_ColorBackgroundHovering = {229, 241, 251, 255};
-const SDL_Color Controls::Button::s_ColorBackgroundPressed = {204, 228, 247, 255};
-const SDL_Color Controls::Button::s_ColorBackgroundDisabled = { 240, 240, 240, 255 };
+const SDL_Color Controls::Button::s_ColorBackgroundIdle = {59, 40, 75, 255};
+const SDL_Color Controls::Button::s_ColorBackgroundHovering = {59, 40, 75, 255};
+const SDL_Color Controls::Button::s_ColorBackgroundPressed = { 101, 82, 117, 255};
+const SDL_Color Controls::Button::s_ColorBackgroundDisabled = { 36, 19, 51, 255 };
 
-const SDL_Color Controls::Button::s_ColorForegroundIdle = {0, 0, 0, 255};
-const SDL_Color Controls::Button::s_ColorForegroundHovering = {0, 0, 0, 255};
-const SDL_Color Controls::Button::s_ColorForegroundPressed = {0, 0, 0, 255};
-const SDL_Color Controls::Button::s_ColorForegroundDisabled = { 120, 120, 120, 255 };
+const SDL_Color Controls::Button::s_ColorForegroundIdle = {228, 228, 228, 255};
+const SDL_Color Controls::Button::s_ColorForegroundHovering = {243, 243, 243, 255};
+const SDL_Color Controls::Button::s_ColorForegroundPressed = {255, 255, 255, 255};
+const SDL_Color Controls::Button::s_ColorForegroundDisabled = { 200, 200, 200, 255 };
 
-const SDL_Color Controls::Button::s_ColorBorderIdle = {200, 200, 200, 255};
-const SDL_Color Controls::Button::s_ColorBorderHovering = {173, 216, 230, 255};
-const SDL_Color Controls::Button::s_ColorBorderPressed = {153, 186, 202, 255};
-const SDL_Color Controls::Button::s_ColorBorderDisabled = { 200, 200, 200, 255 };
+const SDL_Color Controls::Button::s_ColorBorderIdle = {36, 19, 51, 255};
+const SDL_Color Controls::Button::s_ColorBorderHovering = {101, 82, 117, 255};
+const SDL_Color Controls::Button::s_ColorBorderPressed = { 150, 138, 160, 255};
+const SDL_Color Controls::Button::s_ColorBorderDisabled = { 59, 40, 75, 255 };
 
 
 Controls::Button::Button(const UIRootContext& context, const std::string& text, Control* parentControl) :
@@ -44,9 +44,9 @@ Controls::Button::Button(const UIRootContext& context, const std::string& text, 
     Padding.x = 12;
     Padding.y = 4;
     
-    m_CurrentBackgroundColorInterpolator.SetDuration(0.25);
-    m_CurrentForegroundColorInterpolator.SetDuration(0.25);
-    m_CurrentBorderColorInterpolator.SetDuration(0.25);
+    m_CurrentBackgroundColorInterpolator.SetDuration(0.20);
+    m_CurrentForegroundColorInterpolator.SetDuration(0.20);
+    m_CurrentBorderColorInterpolator.SetDuration(0.20);
 
     m_CurrentBackgroundColorInterpolator.OnValueChanged = [this](SDL_Color color) {
         m_CurrentBackgroundColor = color;
