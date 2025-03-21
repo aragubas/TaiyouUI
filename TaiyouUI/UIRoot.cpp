@@ -86,7 +86,8 @@ void UIRoot::Draw(SDL_Renderer* renderer, double deltaTime) {
 
 void UIRoot::EventUpdate(SDL_Event& event) {
     using LayersReverseIterator = std::vector<Layer>::const_reverse_iterator;
-
+    
+    // Update events from front to back
     for (LayersReverseIterator it = m_Layers.rbegin();
          it != m_Layers.rend(); it++)
     {
