@@ -2,8 +2,8 @@
 Simplistic and quick SDL2 C++ GUI Framework for real time projects, with low overhead
 
 > [!IMPORTANT]
-> This project has been moved to Gitlab. 
-> It is now under this URL: https://gitlab.com/aragubas1/TaiyouUI 
+> This project has been moved to Codeberg. 
+> It is now under this URL: https://codeberg.org/Aragubas/TaiyouUI
 
 This project is currently a W.I.P
 
